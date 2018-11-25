@@ -14,7 +14,7 @@ docker-compose up
 
 
 ## Xdebug with VSCODE
-[Install xDebug extension for vscode] (https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug)
+[Install xDebug extension for vscode](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug)
 
 
 
