@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: 'mariadb:latest'
+    ports: 
+      - "13306:3306"
+    environment:
+      - MYSQL_DATABASE=CST8257
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - ./db/CST8257_dump.sql:/docker-entrypoint-initdb.d/CST8257.sql
+  web:
+    build: ./server
+    ports:
+      - '80:80'
+    volumes:
+      - ./src:/var/www/html/
+    depends_on:
+      - db
