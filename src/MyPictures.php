@@ -6,19 +6,33 @@ include 'shared/db.php';
 include 'shared/header.php';
 ?>
 <style>
-  .scrolling-wrapper {
+  .vertical-scroll-wrapper {
   /* overflow-x: ; */
     overflow-y: scroll;
     white-space: nowrap;
+    /* min-height: 100%; */
     max-height: 350px;
     padding: 1em;
     border-radius: 10px;
     /* margin: -5px; */
   }
 
-  .horitonal-scroll-wrapper {
+  .horizontal-scroll-wrapper {
+    white-space: nowrap;
     max-width: 100%;
-    overflow-x: scroll;
+    /* height: 100%; */
+    overflow: hidden;
+    overflow-x: auto;
+    padding: 1em;
+    cursor
+    /* margin: 0 10px; */
+  }
+
+  .thumbnail {
+    max-width: 100px;
+    min-width:100px;
+    margin: 0 10px;
+    display: inline;
   }
 </style>
 
@@ -35,26 +49,36 @@ include 'shared/header.php';
       <img src="https://via.placeholder.com/800x500.png/09f/fff" alt="">
       <br>
       <br>
-      <div class="tile is-parent horizonal-scroll-wrapper">
-        <div class="tile is-child">
+      <div class=" horizontal-scroll-wrapper">
+
+        <div class="thumbnail">
             <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
         </div>
 
-        <div class="tile is-child">
+        <div class="thumbnail">
             <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
         </div>
 
-        <div class="tile is-child">
+        <div class="thumbnail">
             <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
         </div>
 
-        <div class="tile is-child">
+        <div class="thumbnail">
             <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
         </div>
 
-        <div class="tile is-child">
+        <div class="thumbnail">
             <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
         </div>
+
+        <div class="thumbnail">
+            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
+        </div>
+
+        <div class="thumbnail">
+            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
+        </div>
+
         
       
       </div>
@@ -69,7 +93,7 @@ include 'shared/header.php';
       </div>
 
     <h2 class="title is-5"> Comments:</h2>
-    <div class="scrolling-wrapper has-background-light">
+    <div class="vertical-scroll-wrapper has-background-light">
         
             <div class="box "> 
             <a href=""> User <small>  <em> (11/11/1984 )  </em>  </small> </a>
