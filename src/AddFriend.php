@@ -1,12 +1,22 @@
 <?php 
-include 'helpers/validation.php';
-
+include 'shared/header.php';
 ## declares database as $db
 include 'shared/db.php';
+include 'helpers/validation.php';
+include 'helpers/addFriend.php';
+include 'helpers/util.php';
 
 
 
-include 'shared/header.php';
+$errMsg ='';
+$succMsg ='';
+if($_POST['submit'])
+{
+    $idFrom = $_SESSION['login'];
+    $idTo = getPostSafely('idTo','');
+    validateFriendRequest($idTo, $idFrom, $db, $errMsg, $succMsg);
+
+}
 ?>
 
 <div class="section hero is-fullheight">
@@ -31,22 +41,31 @@ include 'shared/header.php';
           <div class="field-body">
           <div class="field has-addons">
               <div class="control">
-                <input class="input" type="text" placeholder="Find a friend">
+                  <input class="input" name="idTo" type="text" placeholder="Find a friend" oninput="onUserSearch(this.value)">
               </div>
               <div class="control">
-                <button type="submit" class="button is-info">
+                <button type="submit" name="submit" value="submit" class="button is-info">
                 <i class="fas fa-lg fa-plus"></i>
                 </button>
               </div>
             </div>
           </div>
         </div>
+          <p class="help is-danger">  <?php  echo $errMsg; ?> </p>
+          <p class="help is-success">  <?php  echo $succMsg; ?> </p>
         </form>
+    <div>
+        <ul id="search-result">
+            
+        </ul>
+    </div>
     </div>  <!-- COLUMN -->
   </div>    <!-- CONTAINER -->
 </div>      <!-- HERO -->
 
 
+
+<script type="text/javascript" src="content/scripts/addfriend.js"></script>
 
 <!-- FOOTER -->
 <?php include 'shared/footer.php'; ?>

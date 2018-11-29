@@ -1,5 +1,6 @@
 <?php 
-  $dbConnection = parse_ini_file("db_connection.ini");
+  $dbIniLocation = "db_connection.ini";
+  $dbConnection = parse_ini_file($dbIniLocation);
     extract($dbConnection);
     $db = new PDO($dsn, $user, $password);
     ## verbose errors

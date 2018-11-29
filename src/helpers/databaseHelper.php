@@ -1,5 +1,4 @@
 <?php
-
     function getNameFromId($id, &$db)
     {
         $st ="SELECT Name FROM User WHERE UserId = :id";
@@ -9,5 +8,4 @@
         $name = $row['Name'];
         return $name;
     }
-
 ?>
