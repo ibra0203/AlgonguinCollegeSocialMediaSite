@@ -4,5 +4,5 @@
       <strong> &copy; Algonquin College</strong> 2010 - 2018, All rights reserved
     </p>
   </div>
-  <script src="script.js"></script>
+  <script src="content/scripts/script.js"></script>
 </footer>

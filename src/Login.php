@@ -1,27 +1,49 @@
 <?php 
+include 'shared/header.php';
 include 'helpers/validation.php';
-
+include 'helpers/login.php';
+include 'helpers/util.php';
 
   ## inputs
-  $id = trim($_POST["id"]);
-  $user_password = trim($_POST["password"]);
-
+  $id = getPostSafely('loginId');
+  $password = getPostSafely('loginPassword');
   ## Validation errors 
-  $idMsg        = '';
-  $passwordMsg  = '';
-
-  $dbConnection = parse_ini_file("db_connection.ini");
-  extract($dbConnection);
-  $db = new PDO($dsn, $user, $password);
-  ## verbose errors
-  $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+  $errMsg        = '';
 
 
   ## Process login here
+  $validation = array();
   if ( isset($_POST['submit']) ) {
+      ValidateAndAdd('loginId', $validation);
+      ValidateAndAdd('loginPassword', $validation);
+      #is validation successful? 
+      if($validation['valid'] == true)
+      {
+          
+          $loginResult = validateLogin($id, $password, $db);
+          if($loginResult == true)
+          {
+              $_SESSION['login'] = $id;
+              #redirect to the intended page if it was set
+              $redirectTo='index.php';
+              if($_SESSION['redirectTo'])
+              {
+                  $redirectTo = $_SESSION['redirectTo'];
+                  unset($_SESSION['redirectTo']);
+                  
+              }  
+              header("Location: ".$redirectTo);
+              exit( );
+          }
+          else
+          {
+              $errMsg="Invalid ID or Password";
+          }
+          
+          
+      }
   }
 
-include 'shared/header.php';
 ?>
 
 <div class="section hero is-fullheight">
@@ -50,7 +72,7 @@ include 'shared/header.php';
                       class="input" 
                       type="text" 
                       placeholder="" 
-                      name="id"
+                      name="loginId"
                       value = ""
                       >
                       <span class="icon is-small is-right" style="display:none">
@@ -59,8 +81,6 @@ include 'shared/header.php';
                       <span class="icon is-small is-left">
                         <i class="fas fa-id-card"></i>
                       </span>
-                      <p class="help is-danger"> <?php  echo $idMsg; ?> </p>
-
                     </p>
                   </div> 
                 </div>
@@ -77,7 +97,7 @@ include 'shared/header.php';
                         class="input" 
                         type="password" 
                         placeholder="" 
-                        name="password"
+                        name="loginPassword"
                         value = ""
                         >
                         <span class="icon is-small is-right" style="display:none">
@@ -86,13 +106,13 @@ include 'shared/header.php';
                         <span class="icon is-small is-left">
                             <i class="fas fa-lock"></i>
                           </span>
-                          <p class="help is-danger">  <?php echo $passwordMsg; ?> </p>
+                          
                       </p>
                     </div>        
                   </div>
               </div>
 
-
+                <p class="help is-danger">  <?php echo $errMsg; ?> </p>
               <div class="field is-horizontal">    
               <div class="field-body">
                 <div class="field">

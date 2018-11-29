@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -45,12 +48,19 @@
       </a> 
 
       </div>
-
-      <div class="navbar-end">
-      <a href="login.php" class="navbar-item">
-        Login
-      </a>   
-      </div>
+      <?php if (isset($_SESSION['login'])):?>
+        <div class="navbar-end">
+            <a href="Logout.php" class="navbar-item">
+              Log Out
+            </a>   
+        </div>
+        <?php else:?>
+        <div class="navbar-end">
+            <a href="Login.php" class="navbar-item">
+              Log In
+            </a>   
+        </div>
+      <?php endif;?>
       </div>  
 </nav>
 </html>
