@@ -7,14 +7,11 @@ include 'shared/header.php';
 ?>
 <style>
   .vertical-scroll-wrapper {
-  /* overflow-x: ; */
     overflow-y: scroll;
     white-space: nowrap;
-    /* min-height: 100%; */
     max-height: 350px;
     padding: 1em;
     border-radius: 10px;
-    /* margin: -5px; */
   }
 
   .horizontal-scroll-wrapper {
@@ -24,8 +21,8 @@ include 'shared/header.php';
     overflow: hidden;
     overflow-x: auto;
     padding: 1em;
-    cursor
-    /* margin: 0 10px; */
+    cursor: pointer;
+    margin: 0 10px;
   }
 
   .thumbnail {

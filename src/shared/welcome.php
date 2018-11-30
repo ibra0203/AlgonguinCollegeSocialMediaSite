@@ -11,5 +11,5 @@
     }
 ?>
       <h2 class="subtitle has-text-centered is-6">
-          Welcome, <b><?php echo $name?></b>! </br> <i>(Not you? change user <a href="#">here</a>)</i>
+          Welcome, <b><?php echo $name?></b>! </br> <i>(Not you? change user <a href="Logout.php">here</a>)</i>
 <hr>

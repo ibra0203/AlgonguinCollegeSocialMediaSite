@@ -1,5 +1,5 @@
 <?php 
-include 'shared/header.php';
+// include 'shared/db.php';
 include 'helpers/validation.php';
 include 'helpers/login.php';
 include 'helpers/util.php';
@@ -43,7 +43,7 @@ include 'helpers/util.php';
           
       }
   }
-
+  include 'shared/header.php';
 ?>
 
 <div class="section hero is-fullheight">

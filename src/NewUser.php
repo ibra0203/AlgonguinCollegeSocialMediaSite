@@ -1,5 +1,5 @@
 <?php 
-include 'shared/header.php';
+
 include 'helpers/validation.php';
 include 'helpers/util.php';
 include 'helpers/registration.php';
@@ -32,8 +32,7 @@ if ( isset($_POST['submit']) ) {
             }
         }
   }
-
-
+  include 'shared/header.php';
 ?>
 
 
