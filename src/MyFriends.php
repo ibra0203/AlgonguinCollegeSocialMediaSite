@@ -11,10 +11,25 @@ include 'shared/header.php';
 
 <div class="section hero is-fullheight">
   <div class="container">
-    <div class="column is-7 is-offset-2 has-text-left">
+    
     <h1 class="title is-1 has-text-centered">My Friends</h1>
       <?php  include 'shared/welcome.php' ;?>
-      </div>  <!-- COLUMN -->
+
+      <br>
+      <div class="has-text-centered">
+      <h3 class=" button title is-5 has-text-centered is-outlined">
+        <a href="AddFriend.php"> 
+          <i class="fas fa-lg fa-plus"></i> 
+          &nbsp;
+          Add Friends
+        </a>
+      </h3>
+      </div>
+      
+      <br>
+      <br>
+      <br>
+
 
 <div class="columns is-5">
     <div class="column has-background-grey-lighter">
