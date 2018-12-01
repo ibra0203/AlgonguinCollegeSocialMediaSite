@@ -5,7 +5,6 @@ include 'helpers/util.php';
 include 'helpers/albums.php';
 
 ## declares database as $db
-
 include 'shared/db.php';
 $owner = $_SESSION['login'];
 $albums = getAlbumsByUser($owner, $db);
@@ -25,6 +24,8 @@ if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
   }
 include 'shared/header.php';
+
+var_dump($albums);
 ?>
 
 <div class="section hero is-fullheight">
@@ -74,8 +75,9 @@ include 'shared/header.php';
           <?php
 
           foreach( $albums as $album) {
-            $private = $album ->Accessability_Code == 'private' ? 'selected': '';
-            $public  = $album ->Accessability_Code == 'shared' ? 'selected': '';
+            $private = $album ->Accessibility_Code == 'private' ? 'selected': '';
+            $public  = $album ->Accessibility_Code == 'shared' ? 'selected': '';
+            // $public = 'selected';
             echo "<tr>";
             echo "<td> $album->Title</td>";
             echo "<td> $album->Date_Updated</td>";
@@ -84,7 +86,7 @@ include 'shared/header.php';
                     <div class='select is-rounded'>
                     <select name = albums[] >
                       <option value='$album->Album_Id,private' $private > Me Only</option>
-                      <option value='$album->Album_Id,public'  $public >Me and my friends</option>
+                      <option value='$album->Album_Id,shared'  $public > Me and my friends</option>
                     </select>
                     </div>          
             </td>";
