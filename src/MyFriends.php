@@ -5,7 +5,6 @@ include 'helpers/validation.php';
 include 'shared/db.php';
 
 
-
 include 'shared/header.php';
 ?>
 
@@ -14,7 +13,6 @@ include 'shared/header.php';
     
     <h1 class="title is-1 has-text-centered">My Friends</h1>
       <?php  include 'shared/welcome.php' ;?>
-
       <br>
       <div class="has-text-centered">
       <h3 class=" button title is-5 has-text-centered is-outlined">
@@ -25,11 +23,10 @@ include 'shared/header.php';
         </a>
       </h3>
       </div>
-      
-      <br>
-      <br>
-      <br>
 
+      <br>
+      <br>
+      <br>
 
 <div class="columns is-5">
     <div class="column has-background-grey-lighter">

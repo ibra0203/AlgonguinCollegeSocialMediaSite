@@ -1,11 +1,29 @@
 <?php 
-include 'helpers/validation.php';
+session_start();
+// include 'helpers/validation.php';
+include 'helpers/util.php';
+include 'helpers/albums.php';
 
 ## declares database as $db
+
 include 'shared/db.php';
+$owner = $_SESSION['login'];
+$albums = getAlbumsByUser($owner, $db);
+$successNotification = '';
 
+if (isset ($_POST['submit'])) {
+  $updatedAlbums = $_POST['albums'];
+  foreach ($updatedAlbums as $album) {
+    $album_id = explode(",", $album)[0];
+    $access = explode(",", $album)[1];    
+    changeAlbumPermissions($db, $access, $album_id);
+  }
+}
 
-
+$album =  $_GET['deleteAlbum'];
+if (isset($album)) {
+  $deleteMsg = deleteAlbum($db, $owner, $album);
+  }
 include 'shared/header.php';
 ?>
 
@@ -18,13 +36,30 @@ include 'shared/header.php';
     </div>  <!-- COLUMN -->
 
     <div class="column">
+    <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
+      method="post"
+    >
+     
+    
       <a href="AddAlbum.php" class="button is has-text-centered is-link" > 
           <span class="icon is-large">
           <i class="fas fa-lg fa-plus-circle"></i>
           </span>
           &nbsp;&nbsp;&nbsp;Add Album
       </a>
+      
+      <br>
+      <br>
 
+
+       <?php if ($deleteMsg != '') {
+        echo "
+        <div class='column is-4  notification is-success'>
+        $deleteMsg
+          <button class='delete'></button>
+        
+         </div>";
+      }  ?>
       <table class="table is-fullwidth">
           <thead>
             <tr>
@@ -36,35 +71,48 @@ include 'shared/header.php';
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>My Album</td>
-              <td>22/02/1988</td>
-              <td>34</td>
-              <td>
-              <div class="control has-icons-left">
-                <div class="select">
-                  <select>
-                    <option selected>Me Only</option>
-                    <option>Shared with Friends</option>
-                  </select>
-                </div>
-                <div class="icon is-small is-left">
-                  <i class="fas fa-eye"></i>
-                </div>
-              </div>
-              </td>
-              <td>
-                <a href="">
-                  <span class="icon is-large">
-                    <i class="far fa-lg fa-trash-alt"></i>
+          <?php
+
+          foreach( $albums as $album) {
+            $private = $album ->Accessability_Code == 'private' ? 'selected': '';
+            $public  = $album ->Accessability_Code == 'shared' ? 'selected': '';
+            echo "<tr>";
+            echo "<td> $album->Title</td>";
+            echo "<td> $album->Date_Updated</td>";
+            echo "<td> 23 </td>";
+            echo "<td>             
+                    <div class='select is-rounded'>
+                    <select name = albums[] >
+                      <option value='$album->Album_Id,private' $private > Me Only</option>
+                      <option value='$album->Album_Id,public'  $public >Me and my friends</option>
+                    </select>
+                    </div>          
+            </td>";
+            echo "<td>
+                  <a  href = '?deleteAlbum=$album->Album_Id'
+                          class='trash button is-warning ' 
+                          name = $album->Album_Id   >
+                  <span class='icon is-large '>
+                    <i class='far fa-lg fa-trash-alt'></i>
                   </span>
-                </a>
-              </td>
-            </tr>
-            <!-- POPULATE TABLE HERE -->
+                </button>
+                
+                </td>";
+            echo "</tr>";
+          }
+            
+          ?>            
           </tbody>
       </table>
+      <input class="button is-primary" name="submit" type="submit" value='Save Changes'>
+      </form>
     </div>  <!-- COLUMN -->
   </div>    <!-- CONTAINER -->
 </div>      <!-- HERO -->
+
+<!-- get rid of notifications -->
+<script type="text/javascript" src="content/scripts/removeNotificaiton.js"></script>
+
+
 <?php include 'shared/footer.php'; ?>
+

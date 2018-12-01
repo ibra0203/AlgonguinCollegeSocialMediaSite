@@ -1,8 +1,27 @@
 <?php
 ## declares database as $db
+session_start();
 include 'shared/db.php';
+include 'helpers/util.php';
+include 'helpers/albums.php';
+
+$owner = $_SESSION['login'];
+$albumTitle = getPostSafely('albumTitle');
+$access = getPostSafely('access');
+$description = getPostSafely('description');
+$createMsg = '';
+
+
+if (isset($_POST['submit'])) {
+  // $date_updated = date("Y/m/d");
+  $date_updated = date("Y-m-d H:i:s");
+  $createMsg = createAlbum($db, $owner, $albumTitle, $description, $date_updated, $access);
+}
+
 
 include 'shared/header.php';
+
+var_dump($_POST);
 ?>
 
 <div class="section hero is-fullheight">
@@ -11,6 +30,15 @@ include 'shared/header.php';
     <?php  include 'shared/welcome.php' ;?>
 
     <div class="column is-7 is-offset-2 has-text-left">
+
+      <?php if ($createMsg != '') {
+          echo "
+          <div class='flash-msg column is-fullwidth  notification is-success'>
+          $createMsg
+            <button id='delete' class='delete'></button>
+          
+          </div>";
+        }  ?>
 
       <form 
         action="<?php echo $_SERVER['PHP_SELF']?>"
@@ -29,7 +57,7 @@ include 'shared/header.php';
                       class="input" 
                       type="text" 
                       placeholder="" 
-                      name="albumName"
+                      name="albumTitle"
                       value = "<?php echo (isset($albumTitle))?$albumTitle:'';?>"
                       >
                       <span class="icon is-small is-right" style="display:none">
@@ -53,9 +81,9 @@ include 'shared/header.php';
               <div class="field-body ">
                 <div class="field">
                   <div class="select is-multiple is-fullwidth">
-                    <select multiple size="2">
+                    <select name="access" multiple size="2">
                       <option value="private" >Me Only</option>
-                      <option value="public" selected>
+                      <option value="shared" selected>
                       Shared with friend
                       </option>
                     </select>
@@ -71,38 +99,37 @@ include 'shared/header.php';
           <div class="field-body ">
             <div class="field">
                 <div class="control">
-                  <textarea class="textarea is-primary" placeholder="enter description"></textarea>
+                  <textarea class="textarea is-primary" name="description" placeholder="enter description"></textarea>
                 </div>
               </div>
           </div>
         </div>
 
-        <div class="field is-horizontal">    
+          
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <input
-                      class="button is-success is-fullwidth"
-                      type="submit" value="Add" name="submit" >
-                      
-                    </button>
                   </div>
                 </div>   
-                <div class="field">
                     <div class="control">
-                      <input class="button is-warning is-fullwidth clearButton"
+                    <input
+                      class="button is-success"
+                      type="submit" value="Add" name="submit" >
+                      <input class="button is-warning clearButton"
                        type="reset" 
                        name="reset"
                        onclick="location.href='AddAlbum.php'; " value="Reset">                
                     </div>
                   </div>
               </div>
-            </div> 
+            
              
        </form>
     </div>  <!-- COLUMN -->
   </div>    <!-- CONTAINER -->
 </div>      <!-- HERO -->
 
+<script type="text/javascript" src="content/scripts/removeNotificaiton.js"></script>
 <!-- FOOTER -->
 <?php include 'shared/footer.php'; ?>
+

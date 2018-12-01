@@ -4,13 +4,14 @@ include 'helpers/validation.php';
 include 'helpers/login.php';
 include 'helpers/util.php';
 
+session_start();
+
   ## inputs
   $id = getPostSafely('loginId');
   $password = getPostSafely('loginPassword');
+  
   ## Validation errors 
   $errMsg        = '';
-
-
   ## Process login here
   $validation = array();
   if ( isset($_POST['submit']) ) {
@@ -25,7 +26,7 @@ include 'helpers/util.php';
           {
               $_SESSION['login'] = $id;
               #redirect to the intended page if it was set
-              $redirectTo='index.php';
+              $redirectTo='MyFriends.php';
               if($_SESSION['redirectTo'])
               {
                   $redirectTo = $_SESSION['redirectTo'];
@@ -33,14 +34,13 @@ include 'helpers/util.php';
                   
               }  
               header("Location: ".$redirectTo);
-              exit( );
+              // exit( );
           }
           else
           {
               $errMsg="Invalid ID or Password";
           }
-          
-          
+
       }
   }
   include 'shared/header.php';
@@ -53,14 +53,11 @@ include 'helpers/util.php';
     you need to <a href="NewUser.php"> Sign up</a> if you're a new user.
    </h2>
   <hr>
-  
       <div class="column is-5 is-offset-3 has-text-left">
-
       <form action="<?php echo $_SERVER['PHP_SELF']?>"
              method="POST" 
              class="inputForm"
              >
-      
              <div class="field is-horizontal">
                 <div class="field-label is-normal">
                   <label class="label">ID</label>

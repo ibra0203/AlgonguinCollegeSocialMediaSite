@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 include 'helpers/validation.php';
 include 'helpers/util.php';
 include 'helpers/registration.php';
