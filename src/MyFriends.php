@@ -1,9 +1,42 @@
 <?php 
+session_start();
 include 'helpers/validation.php';
-
+include 'helpers/friends.php';
+include 'helpers/addFriend.php';
 ## declares database as $db
 include 'shared/db.php';
 
+$owner = $_SESSION['login'];
+
+$pendingRequests = getFriendRequests($db, $owner);
+$myFriends = getMyFriends($db, $owner);
+
+
+
+// deny friendships
+if (isset($_POST['deny'])) {
+  // $requests is a string of UserIds
+  $requests = $_POST['requests'];
+  foreach ($requests as $requester_id) {
+    denyFriendRequest($db, $requester_id, $owner);
+  }
+}
+
+// accept friendships
+if (isset($_POST['accept'])) {
+  $requests = $_POST['requests'];
+  foreach ($requests as $requester_id) {
+    acceptFriendRequest($requester_id, $owner, $db);
+  }
+}
+
+// defriend
+if (isset($_POST['unfriend'])) {
+  $selected = $_POST['unfriends'];
+  foreach ($selected as $current_friend) {
+    denyFriendRequest($db, $current_friend, $owner);
+  }
+}
 
 include 'shared/header.php';
 ?>
@@ -28,6 +61,10 @@ include 'shared/header.php';
       <br>
       <br>
 
+  <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
+  method="post"
+>
+
 <div class="columns is-5">
     <div class="column has-background-grey-lighter">
     <h2 class="subtitle "> Friends:</h2> 
@@ -41,11 +78,22 @@ include 'shared/header.php';
               </tr>
             </thead>
             <tbody>
-            <tr>
-              <!-- POPULATE TABLE HERE -->
-              <th> <a href="">Mike Jones</a> </th>
-              <th> 3</th>
-              <th> <input type="checkbox"></th></tr>
+            
+
+             <?php 
+                  foreach ($myFriends as $user) {
+                    echo "<tr>";
+                    echo "<td> $user->Name</td>";
+                    echo "<td > 14 </td>";
+                    echo "<td colspan='1'>
+                            <input type='checkbox' name='unfriends[]' value=$user->UserId >
+                        </td>";
+                    echo "</tr>";
+                  }
+                
+                ?>
+
+
             </tbody>
         </table>   
         <div class="control has-text-right">
@@ -59,18 +107,26 @@ include 'shared/header.php';
       
   <div class="column has-background-light">
         <h2 class="subtitle "> Friends Requests:</h2> 
-        <table class="table is-fullwidth">
-            
+        <table class="table is-fullwidth is-striped">
             <thead>
-              <tr>
-                <th><i class="fa fa-user"></i>&nbsp;Name</th>
-                <th><i class="fas fa-user-minus"></i>&nbsp;Accept or Deny</th>
-              </tr>
+                <th colspan='8'><i class="fa fa-user"></i>&nbsp;Name</th>
+                <th colspan='1'><i class="fas fa-user-minus"></i>&nbsp;Accept or Deny</th>
             </thead>
             <tbody>
-              <!-- POPULATE TABLE HERE -->
-              <th> <a href="">Mike Jones</a> </th>
-              <th> <input type="checkbox"></th></tr>
+
+                <?php 
+                  foreach ($pendingRequests as $user) {
+                    echo "<tr>";
+                    echo "<td colspan='8'> $user->Name</td>";
+                    echo "<td colspan='1'>
+                            <input type='checkbox' name='requests[]' value=$user->UserId >
+                        </td>";
+                    echo "</tr>";
+                  }
+                
+                
+                ?>
+
             </tbody>
         </table>
         <div class="control has-text-right">
@@ -85,7 +141,7 @@ include 'shared/header.php';
 </div>        
   
 
-    
+ </form>   
   </div>    <!-- CONTAINER -->
 </div>      <!-- HERO -->
 

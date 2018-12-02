@@ -9,25 +9,40 @@ include 'shared/db.php';
 include 'helpers/albums.php';
 
 $owner = $_SESSION['login'];
+
+
 $imgTitle = getPostSafely('imageTitle');
+$files = getPostSafely('files');
 $description = getPostSafely('description');
 
 // Retrieve albums
 $albums = getAlbumsByUser($owner, $db);
 
 
+// TODO Parse Images
 
+
+// TODO Add image relations to DB
 
 
 include 'shared/header.php';
+
+// var_dump($_POST);
 ?>
 
 <div class="section hero is-fullheight">
   <div class="container">
-    <div class="column is-6 is-offset-2 has-text-left">
-    <h1 class="title is-1 has-text-centered">Upload Pictures</h1>
+  <h1 class="title is-1 has-text-centered">Upload Pictures</h1>
       <?php  include 'shared/welcome.php' ;?>
-      </h2>
+    <div class="column is-6 is-offset-2 has-text-left">
+    
+      
+
+      <form 
+        action="<?php echo $_SERVER['PHP_SELF']?>"
+        method="POST" 
+        class="inputForm"
+        > 
 
       <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -40,7 +55,7 @@ include 'shared/header.php';
                       class="input" 
                       type="text" 
                       placeholder="" 
-                      name="albumTitle"
+                      name="imageTitle"
                       value = "<?php echo (isset($albumTitle))?$albumTitle:'';?>"
                       >
                       <span class="icon is-small is-right" style="display:none">
@@ -61,7 +76,7 @@ include 'shared/header.php';
                   <div class="field-body">
                       <div class="file has-name is-fullwidth">
                         <label class="file-label">
-                          <input class="file-input file-upload" type="file" name="resume">
+                          <input class="file-input file-upload" type="file" name="files">
                           <span class="file-cta">
                             <span class="file-icon">
                               <i class="fas fa-upload"></i>
@@ -75,9 +90,6 @@ include 'shared/header.php';
                   </div>   
               </div>
         
-
-
-
         <div class="field is-horizontal">
             <div class="field-label ">
                 <label class="label">Upload to</label>
@@ -130,8 +142,8 @@ include 'shared/header.php';
                     </div>
                   </div>
               </div>
-  
 
+      </form>   
     </div>  <!-- COLUMN -->
   </div>    <!-- CONTAINER -->
 </div>      <!-- HERO -->

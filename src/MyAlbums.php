@@ -32,15 +32,13 @@ include 'shared/header.php';
     <div class="column is-6 is-offset-2 has-text-left">
       <h1 class="title is-1 has-text-centered">My Albums</h1>
       <?php  include 'shared/welcome.php' ;?>
-
-    </div>  <!-- COLUMN -->
+    </div>  
 
     <div class="column">
     <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
       method="post"
     >
-     
-    
+
       <a href="AddAlbum.php" class="button is has-text-centered is-link" > 
           <span class="icon is-large">
           <i class="fas fa-lg fa-plus-circle"></i>
