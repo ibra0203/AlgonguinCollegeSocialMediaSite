@@ -27,13 +27,16 @@
     return $res;
   }
 
+  // TODO
+  // Join `User`.`UserId` = `Friendship`.`Friend_RequesteeId`
   function getMyFriends($db, $user) {
     $st = "SELECT `User`.`UserId`, `Friendship`.`*`,`User`.`Name`
             FROM `Friendship`
             INNER JOIN `User`
             ON `User`.`UserId` = `Friendship`.`Friend_RequesterId`
-            WHERE `Friendship`.`Friend_RequesteeId` = :user_id
-            AND `Friendship`.`Status` = 'accepted'
+            WHERE `Friendship`.`Status` = 'accepted'
+            
+            AND (`Friendship`.`Friend_RequesteeId` = :user_id)
     ";
     $prepSt =$db->prepare($st);
     $prepSt->execute(['user_id'=>$user]);

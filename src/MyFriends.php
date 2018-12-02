@@ -83,7 +83,11 @@ include 'shared/header.php';
              <?php 
                   foreach ($myFriends as $user) {
                     echo "<tr>";
-                    echo "<td> $user->Name</td>";
+                    echo "<td>
+                            <a href = '?friendId=$user->UserId' > 
+                                $user->Name
+                            </a>
+                          </td>";
                     echo "<td > 14 </td>";
                     echo "<td colspan='1'>
                             <input type='checkbox' name='unfriends[]' value=$user->UserId >

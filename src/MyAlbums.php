@@ -23,6 +23,8 @@ $album =  $_GET['deleteAlbum'];
 if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
   }
+
+  // $album =  $_GET['deleteAlbum'];
 include 'shared/header.php';
 
 ?>
@@ -33,7 +35,6 @@ include 'shared/header.php';
       <h1 class="title is-1 has-text-centered">My Albums</h1>
       <?php  include 'shared/welcome.php' ;?>
     </div>  
-
     <div class="column">
     <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
       method="post"

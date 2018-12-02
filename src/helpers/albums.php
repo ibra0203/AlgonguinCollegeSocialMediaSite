@@ -43,7 +43,6 @@
         return 'Album Successfully Deleted!';
     }
 
-
     function changeAlbumPermissions($db, $access, $album_id) {
         $st = "UPDATE `Album`
                SET `Album`.`Accessibility_Code` = :access
