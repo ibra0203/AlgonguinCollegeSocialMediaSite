@@ -25,7 +25,6 @@ if (isset($album)) {
   }
 include 'shared/header.php';
 
-var_dump($albums);
 ?>
 
 <div class="section hero is-fullheight">

@@ -18,10 +18,7 @@ if (isset($_POST['submit'])) {
   $createMsg = createAlbum($db, $owner, $albumTitle, $description, $date_updated, $access);
 }
 
-
 include 'shared/header.php';
-
-var_dump($_POST);
 ?>
 
 <div class="section hero is-fullheight">

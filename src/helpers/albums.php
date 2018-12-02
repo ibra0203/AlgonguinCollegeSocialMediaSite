@@ -54,26 +54,3 @@
     }
 ?>
 
-
-<!-- UPDATE `Album`
-               SET `Album`.`Accessibility_Code` = 'private'
-               WHERE `Album`.`Album_Id` = '28'; -->
-
-
-<!-- select *
-from INFORMATION_SCHEMA.TABLE_CONSTRAINTS
-where CONSTRAINT_TYPE = 'FOREIGN KEY'
-
-
-ALTER TABLE `Picture` DROP CONSTRAINT `FK_Picture_Album_Id`;
-
-ALTER TABLE `Picture`
-  DROP FOREIGN KEY `Picture_Album_Id_FK`;
-
-ALTER TABLE `Album`
-DROP FOREIGN KEY `Album_Accessibility_Code_FK`;
-
-ALTER TABLE `Album`
-  DROP FOREIGN KEY `Album_Owner_Id_FK`; -->
-
-
