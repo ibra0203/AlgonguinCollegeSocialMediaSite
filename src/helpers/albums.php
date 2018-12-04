@@ -29,11 +29,13 @@
 
     function deleteAlbum($db, $owner, $album) {
         
+        // remove pictures first
         $st ="DELETE from `Picture`
              WHERE `Picture`.`Album_Id` = :album ";
         $prepSt = $db->prepare($st);
         $prepSt->execute(['album' => $album]);
         
+        // delete album
         $st = "DELETE from `Album`
                WHERE `Album`.`Album_Id` = :album_id
                AND `Album`.`Owner_Id`= :owner";

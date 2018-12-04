@@ -22,7 +22,7 @@ if($_POST['submit'])
 <div class="section hero is-fullheight">
   <div class="container">
     <div class="column is-5 is-offset-3 has-text-left">
-    <h1 class="title is-1 has-text-centered">My Add Friends</h1>
+    <h1 class="title is-1 has-text-centered">Add Friends</h1>
       <?php  include 'shared/welcome.php' ;?>
 
       <h2 class="subtitle has-text-centered">

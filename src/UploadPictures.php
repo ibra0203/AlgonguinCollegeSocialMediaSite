@@ -34,7 +34,7 @@ include 'shared/header.php';
   <div class="container">
   <h1 class="title is-1 has-text-centered">Upload Pictures</h1>
       <?php  include 'shared/welcome.php' ;?>
-    <div class="column is-6 is-offset-2 has-text-left">
+    <div class="column is-7 is-offset-2 has-text-left">
     
       
 
@@ -69,12 +69,12 @@ include 'shared/header.php';
                   </div> 
                 </div>
               </div>
-              <div class="field is-horizontal">
+              <div class="field is-horizontal ">
                   <div class="field-label is-normal">
                     <label class="label">Files</label>
                   </div>
                   <div class="field-body">
-                      <div class="file has-name is-fullwidth">
+                      <div id="files" class="file has-name is-fullwidth" >
                         <label class="file-label">
                           <input class="file-input file-upload" type="file" name="files">
                           <span class="file-cta">
@@ -151,11 +151,13 @@ include 'shared/header.php';
 <script>
 let uploadImg = document.querySelector('.file-upload');
 let fileLabel = document.querySelector('.file-text');
+const fileBtn = document.querySelector('#files');
 uploadImg.addEventListener('change', (e) => {
       let text = 'Choose a File';
       const files = Array.from(e.target.files);
       files.length !== 0 ? text = files[0].name : 'Upload Images...';
       fileLabel.innerHTML = text;
+      fileBtn.classList.add('is-success');
 });
 </script>
 <?php include 'shared/footer.php'; ?>

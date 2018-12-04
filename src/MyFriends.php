@@ -67,9 +67,9 @@ include 'shared/header.php';
 
 <div class="columns is-5">
     <div class="column has-background-grey-lighter">
-    <h2 class="subtitle "> Friends:</h2> 
+    <h2 class="subtitle has-text-left "> Friends:</h2> 
         
-        <table class="table is-fullwidth">
+        <table class="table is-striped is-fullwidth">
             <thead>
               <tr>
                 <th><i class="fa fa-user"></i>&nbsp;Name</th>
@@ -110,7 +110,7 @@ include 'shared/header.php';
 
       
   <div class="column has-background-light">
-        <h2 class="subtitle "> Friends Requests:</h2> 
+        <h2 class="subtitle has-text-left"> Friends Requests:</h2> 
         <table class="table is-fullwidth is-striped">
             <thead>
                 <th colspan='8'><i class="fa fa-user"></i>&nbsp;Name</th>

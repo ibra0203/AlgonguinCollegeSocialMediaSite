@@ -108,7 +108,7 @@ include 'shared/header.php';
                   <div class="control">
                   </div>
                 </div>   
-                    <div class="control">
+                    <div class="control ">
                     <input
                       class="button is-success"
                       type="submit" value="Add" name="submit" >

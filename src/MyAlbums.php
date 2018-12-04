@@ -95,7 +95,7 @@ include 'shared/header.php';
                   <span class='icon is-large '>
                     <i class='far fa-lg fa-trash-alt'></i>
                   </span>
-                </button>
+                
                 
                 </td>";
             echo "</tr>";

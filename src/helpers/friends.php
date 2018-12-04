@@ -28,7 +28,7 @@
   }
 
   // TODO
-  // Join `User`.`UserId` = `Friendship`.`Friend_RequesteeId`
+  // Join `User`.`UserId` = `Friendship`.`Friend_RequesteeId` gets the friend requests you requests for, there has to be a less verbose way to do both
   function getMyFriends($db, $user) {
     $st = "SELECT `User`.`UserId`, `Friendship`.`*`,`User`.`Name`
             FROM `Friendship`
@@ -51,8 +51,5 @@
     $prepSt =$db->prepare($st);
     $prepSt->execute(['requester'=>$requester_id,'requestee'=>$user_id]);
   }
-
-  
-
 
 ?>
