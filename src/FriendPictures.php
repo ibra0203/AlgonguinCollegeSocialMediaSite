@@ -3,10 +3,8 @@ include 'helpers/validation.php';
 include 'helpers/friends.php';
 include 'shared/db.php';
 
-
 $friendId =  $_GET['friendId'];
 $myFriend = getFriendById($db , $friendId);
-
 
 if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
