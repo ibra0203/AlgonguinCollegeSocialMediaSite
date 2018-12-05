@@ -70,4 +70,12 @@
     $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
     return $res[0];
   }
+  function getSharedAlbums($db, $friend_id)
+  {
+      $st = 'SELECT * FROM `Album` WHERE `Album`.`Owner_Id`= :friend_id AND `Album`.`Accessibility_Code` = "shared"';
+      $prepSt = $db->prepare($st);
+      $prepSt->execute(['friend_id'=>$friend_id]);
+      $res = $prepSt->fetchAll();
+      return $res;
+  }
 ?>
