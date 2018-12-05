@@ -1,16 +1,15 @@
 <?php 
 session_start();
+include 'helpers/protected.php';
+ValidateUser();
+
 include 'helpers/validation.php';
 include 'helpers/util.php';
-
-include 'shared/db.php';
-
-
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
+include 'shared/db.php';
 
 $owner = $_SESSION['login'];
-
 
 $imgTitle = getPostSafely('imageTitle');
 $files = getPostSafely('files');

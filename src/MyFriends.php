@@ -1,5 +1,8 @@
 <?php 
 session_start();
+include 'helpers/protected.php';
+ValidateUser();
+
 include 'helpers/validation.php';
 include 'helpers/friends.php';
 include 'helpers/addFriend.php';

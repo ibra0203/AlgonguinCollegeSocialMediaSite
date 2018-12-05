@@ -1,12 +1,14 @@
-<?php 
+<?php
+session_start();
+include 'helpers/protected.php';
+ValidateUser();
+
 include 'shared/header.php';
 ## declares database as $db
 include 'shared/db.php';
 include 'helpers/validation.php';
 include 'helpers/addFriend.php';
 include 'helpers/util.php';
-
-
 
 $errMsg ='';
 $succMsg ='';

@@ -1,4 +1,7 @@
 <?php 
+include 'helpers/protected.php';
+ValidateUser();
+
 include 'helpers/validation.php';
 include 'helpers/friends.php';
 include 'shared/db.php';
@@ -8,7 +11,7 @@ $myFriend = getFriendById($db , $friendId);
 
 if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
-  }
+}
 
 include 'shared/header.php';
 ?>
