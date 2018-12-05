@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include 'helpers/protected.php';
 ValidateUser();
 
