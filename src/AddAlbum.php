@@ -19,7 +19,6 @@ $errMsg = '';
 if (isset($_POST['submit'])) {
   $errMsg =  ValidateRequired($albumTitle);
   if($errMsg == '') {
-    // $date_updated = date("Y/m/d");
     $date_updated = date("Y-m-d H:i:s");
     $createMsg = createAlbum($db, $owner, $albumTitle, $description, $date_updated, $access);
   }

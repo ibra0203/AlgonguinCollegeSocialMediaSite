@@ -1,6 +1,5 @@
 <?php 
 
-
 $st ="INSERT INTO Album(`Title`, `Description`, `Date_Updated`, `Owner_Id`, `Accessibility_Code` 
 VALUES(:title, :description, :date_updated, :owner_id , :accessibility) ";
 

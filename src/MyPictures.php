@@ -1,7 +1,13 @@
 <?php 
+session_start();
 include 'helpers/validation.php';
 include 'shared/db.php';
 include 'shared/header.php';
+include 'helpers/albums.php';
+
+
+$owner = $_SESSION['login'];
+$albums = getAlbumsByUser($owner, $db);
 ?>
 <style>
   .vertical-scroll-wrapper {
@@ -33,10 +39,33 @@ include 'shared/header.php';
 
 <div class="section hero is-fullheight">
   <div class="container">
+
+    
+              
+            
+
     <div class="column is-6 is-offset-2 has-text-left">
     <h1 class="title is-1 has-text-centered"> <b> USER's  </b> Pictures</h1>
     <hr>
   </div>  <!-- COLUMN -->
+
+<div class="column is-6  is-offset-2 ">
+    <div class="field">
+        <div class="select is-fullwidth">
+                <select name="albumId">
+                  <?php 
+                    foreach($albums as $album) {
+                      echo "<option value='$album->Album_Id'> $album->Title </option>";
+                    }
+                  ?>
+                </select>
+              </div>
+              <div class="icon is-small is-left">
+                <!-- <i class="fas fa-images"></i> -->
+              </div>
+    </div>   
+</div>
+  
 
 
     <div class="columns is-2">
