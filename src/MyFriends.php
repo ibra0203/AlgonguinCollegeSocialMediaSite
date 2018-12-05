@@ -97,7 +97,7 @@ include 'shared/header.php';
               </tr>
             </thead>
             <tbody>
-            
+
 
              <?php 
                   foreach ($myFriends as $user) {
