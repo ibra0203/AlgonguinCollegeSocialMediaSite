@@ -11,7 +11,7 @@
 
 
   function getFriendRequests($db, $user) {
-    $st = "SELECT `User`.`UserId`, `Friendship`.`*`,`User`.`Name`
+    $st = "SELECT `User`.`UserId`, `Friendship`.*,`User`.`Name`
             FROM `Friendship`
             INNER JOIN `User`
             ON `User`.`UserId` = `Friendship`.`Friend_RequesterId`

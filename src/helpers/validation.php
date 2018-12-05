@@ -1,6 +1,7 @@
 <?php 
 #include_once('util.php');
-include_once('shared/db.php');
+$dbIniPath ='';
+
 $_password="";
 ##Validates then adds to validation array
 ##Add key 'valid' that will be initialized as true, then switched to false
@@ -16,7 +17,7 @@ function ValidateAndAdd($name, &$result)
 
     if($name =="name")
     $error = ValidateRequired($obj); 
-    else if($name =="ids")
+    else if($name =="id")
     $error = ValidateId($obj); 
     else if($name =="phone")
     $error = ValidatePhone($obj);
@@ -53,17 +54,17 @@ function ValidateId($id)
     }
      else {
 
-        try{
-            $q = "SELECT * FROM User WHERE UserId = '$id'";
-            $qResult = mysqli_query($db, $q);
-            if(mysqli_num_rows($qResult) > 0)
+
+            include('shared/db.php');
+            $q = "SELECT * FROM `User` WHERE `UserId` = :this_id";
+            $prpSt = $db->prepare($q);
+            $prpSt->execute(['this_id'=>$id]);
+            consoleLog($id);
+            if($prpSt->rowCount() > 0)
             {
                 $err = "A user with this ID already exists in our records.";
             }
-            mysqli_close($link);
-        }catch(mysqli_sql_exception $exc){
-
-        }
+      
     }
    
     return $err;

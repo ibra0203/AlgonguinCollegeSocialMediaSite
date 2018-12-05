@@ -1,6 +1,7 @@
 <?php
-include 'shared/header.php';
 include 'helpers/util.php';
+include 'shared/header.php';
+
 ?>
 
 <html>
