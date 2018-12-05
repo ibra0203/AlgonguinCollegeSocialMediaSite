@@ -34,8 +34,9 @@
             FROM `Friendship`
             INNER JOIN `User`
             ON `User`.`UserId` = `Friendship`.`Friend_RequesterId`
+            OR `User`.`UserId` = `Friendship`.`Friend_RequesterId`
             WHERE `Friendship`.`Status` = 'accepted'
-            
+            AND `User`.`Name` <> 'Eric Taylor'
             AND (`Friendship`.`Friend_RequesteeId` = :user_id)
     ";
     $prepSt =$db->prepare($st);
