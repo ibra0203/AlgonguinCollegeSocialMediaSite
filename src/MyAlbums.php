@@ -3,6 +3,7 @@ session_start();
 // include 'helpers/validation.php';
 include 'helpers/util.php';
 include 'helpers/albums.php';
+include 'helpers/databaseHelper.php';
 
 ## declares database as $db
 include 'shared/db.php';

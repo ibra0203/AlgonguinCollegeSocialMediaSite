@@ -27,20 +27,22 @@
     return $res;
   }
 
-  // TODO
-  // Join `User`.`UserId` = `Friendship`.`Friend_RequesteeId` gets the friend requests you requests for, there has to be a less verbose way to do both
-  function getMyFriends($db, $user) {
-    $st = "SELECT `User`.`UserId`, `Friendship`.`*`,`User`.`Name`
-            FROM `Friendship`
-            INNER JOIN `User`
-            ON `User`.`UserId` = `Friendship`.`Friend_RequesterId`
-            OR `User`.`UserId` = `Friendship`.`Friend_RequesterId`
-            WHERE `Friendship`.`Status` = 'accepted'
-            AND `User`.`Name` <> 'Eric Taylor'
-            AND (`Friendship`.`Friend_RequesteeId` = :user_id)
-    ";
+  function getMyFriends($db, $user, $my_name) {
+    $st= "SELECT `User`.`UserId`, `Friendship`.`Friend_RequesterId`,`Friendship`.`Friend_RequesteeId`,`User`.`Name`
+          FROM `Friendship`
+          JOIN `User`
+          ON `User`.`UserId` = `Friendship`.`Friend_RequesteeId`
+          OR `User`.`UserId` = `Friendship`.`Friend_RequesterId`
+          WHERE 
+          `User`.`Name` <> :my_name
+          AND (
+                `Friendship`.`Friend_RequesterId` = :user_id
+          OR    `Friendship`.`Friend_RequesteeId` = :user_id
+          )  
+          AND `Friendship`.`Status` = 'accepted'";
+
     $prepSt =$db->prepare($st);
-    $prepSt->execute(['user_id'=>$user]);
+    $prepSt->execute(['user_id'=>$user, 'my_name' => $my_name]);
     $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
     return $res;
   }
@@ -51,6 +53,16 @@
            AND   `Friendship`.`Friend_RequesteeId` = :requestee";
     $prepSt =$db->prepare($st);
     $prepSt->execute(['requester'=>$requester_id,'requestee'=>$user_id]);
+  }
+
+
+  function unfriend($db, $friend_id, $user_id) {
+    $st = "DELETE FROM `Friendship`
+           WHERE `Friendship`.`Friend_RequesterId` = :current_user
+           AND   `Friendship`.`Friend_RequesteeId` = :friend_id
+           AND   `Friendship`.`Status` = 'accepted'";
+    $prepSt =$db->prepare($st);
+    $prepSt->execute(['friend_id'=>$friend_id,'current_user'=>$user_id]);
   }
 
 ?>

@@ -3,14 +3,17 @@ session_start();
 include 'helpers/validation.php';
 include 'helpers/friends.php';
 include 'helpers/addFriend.php';
+include 'helpers/databaseHelper.php';
 ## declares database as $db
 include 'shared/db.php';
 
+$addMsg = '';
 $owner = $_SESSION['login'];
 
 $pendingRequests = getFriendRequests($db, $owner);
-$myFriends = getMyFriends($db, $owner);
 
+$myName = getNameFromId($owner, $db);
+$myFriends = getMyFriends($db, $owner, $myName);
 
 
 // deny friendships
@@ -19,6 +22,7 @@ if (isset($_POST['deny'])) {
   $requests = $_POST['requests'];
   foreach ($requests as $requester_id) {
     denyFriendRequest($db, $requester_id, $owner);
+    
   }
 }
 
@@ -28,6 +32,7 @@ if (isset($_POST['accept'])) {
   foreach ($requests as $requester_id) {
     acceptFriendRequest($requester_id, $owner, $db);
   }
+  $addMsg = 'Friend Requests Accepted';
 }
 
 // defriend
@@ -35,6 +40,7 @@ if (isset($_POST['unfriend'])) {
   $selected = $_POST['unfriends'];
   foreach ($selected as $current_friend) {
     denyFriendRequest($db, $current_friend, $owner);
+    unfriend($db, $current_friend, $owner);
   }
 }
 
@@ -56,6 +62,15 @@ include 'shared/header.php';
         </a>
       </h3>
       </div>
+
+      <?php if ($addMsg != '') {
+          echo "
+          <div class='flash-msg column is-fullwidth  notification is-success'>
+            $addMsg
+          <button id='delete' class='delete'></button>
+          
+          </div>";
+        }  ?>
 
       <br>
       <br>
@@ -150,6 +165,6 @@ include 'shared/header.php';
 </div>      <!-- HERO -->
 
 
-
+<script type="text/javascript" src="content/scripts/removeNotificaiton.js"></script>
 <!-- FOOTER -->
 <?php include 'shared/footer.php'; ?>
