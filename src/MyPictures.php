@@ -9,33 +9,7 @@ include 'helpers/albums.php';
 $owner = $_SESSION['login'];
 $albums = getAlbumsByUser($owner, $db);
 ?>
-<style>
-  .vertical-scroll-wrapper {
-    overflow-y: scroll;
-    white-space: nowrap;
-    max-height: 350px;
-    padding: 1em;
-    border-radius: 10px;
-  }
 
-  .horizontal-scroll-wrapper {
-    white-space: nowrap;
-    max-width: 100%;
-    /* height: 100%; */
-    overflow: hidden;
-    overflow-x: auto;
-    padding: 1em;
-    cursor: pointer;
-    margin: 0 10px;
-  }
-
-  .thumbnail {
-    max-width: 100px;
-    min-width:100px;
-    margin: 0 10px;
-    display: inline;
-  }
-</style>
 
 <div class="section hero is-fullheight">
   <div class="container">
@@ -49,22 +23,22 @@ $albums = getAlbumsByUser($owner, $db);
     <hr>
   </div>  <!-- COLUMN -->
 
-<div class="column is-6  is-offset-2 ">
-    <div class="field">
-        <div class="select is-fullwidth">
-                <select name="albumId">
-                  <?php 
-                    foreach($albums as $album) {
-                      echo "<option value='$album->Album_Id'> $album->Title </option>";
-                    }
-                  ?>
-                </select>
-              </div>
-              <div class="icon is-small is-left">
-                <!-- <i class="fas fa-images"></i> -->
-              </div>
-    </div>   
-</div>
+  <div class="column is-6  is-offset-2 ">
+      <div class="field">
+          <div class="select is-fullwidth">
+                  <select name="albumId">
+                    <?php 
+                      foreach($albums as $album) {
+                        echo "<option value='$album->Album_Id'> $album->Title </option>";
+                      }
+                    ?>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                  <!-- <i class="fas fa-images"></i> -->
+                </div>
+      </div>   
+  </div>
   
 
 

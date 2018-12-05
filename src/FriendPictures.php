@@ -68,8 +68,8 @@ include 'shared/header.php';
                   </select>
                 </div>
                 <div class="icon is-small is-left">
-                  <!-- <i class="fas fa-images"></i> -->
                 </div>
+              
       </div>   
   </div>
 
