@@ -1,3 +1,5 @@
 *.docx
 *.xlsx
 src/nbproject
+
+test.sql
