@@ -7,6 +7,7 @@ include 'shared/db.php';
 
 
 include 'helpers/albums.php';
+include 'helpers/pictures.php';
 
 $owner = $_SESSION['login'];
 
@@ -23,6 +24,17 @@ $albums = getAlbumsByUser($owner, $db);
 
 
 // TODO Add image relations to DB
+
+if (isset($_POST['submit'])) {
+  foreach( $pictures as $picture) {
+
+    /// TODO implement this
+    //function addPicture($db, $fileame, $title, $description )
+  }
+  $albumId = $_POST['albumId'];
+  echo $albumId[0];
+
+}
 
 
 include 'shared/header.php';
@@ -63,8 +75,7 @@ include 'shared/header.php';
                       <span class="icon is-small is-left">
                         <i class="fas fa-images"></i>
                       </span>
-                      <p class="help is-danger"> <?php  echo $idMsg; ?> </p>
-
+                      <!-- <p class="help is-danger"></p> -->
                     </p>
                   </div> 
                 </div>
@@ -76,7 +87,12 @@ include 'shared/header.php';
                   <div class="field-body">
                       <div id="files" class="file has-name is-fullwidth" >
                         <label class="file-label">
-                          <input class="file-input file-upload" type="file" name="files">
+                          <input class="file-input file-upload" 
+                                  type="file" 
+                                  accept = "*"
+                                  multiple
+                                  type="file" 
+                                  name="imgUpload[]">
                           <span class="file-cta">
                             <span class="file-icon">
                               <i class="fas fa-upload"></i>
@@ -97,7 +113,7 @@ include 'shared/header.php';
             <div class="field-body">
               <div class="is-fullwidth control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select name="album[]">
+                  <select name="albumId[]">
                     <?php 
                       foreach($albums as $album) {
                         echo "<option value='$album->Album_Id'> $album->Title </option>";

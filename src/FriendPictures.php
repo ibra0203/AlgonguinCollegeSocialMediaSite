@@ -1,6 +1,17 @@
 <?php 
 include 'helpers/validation.php';
+include 'helpers/friends.php';
 include 'shared/db.php';
+
+
+$friendId =  $_GET['friendId'];
+$myFriend = getFriendById($db , $friendId);
+
+
+if (isset($album)) {
+  $deleteMsg = deleteAlbum($db, $owner, $album);
+  }
+
 include 'shared/header.php';
 ?>
 <style>
@@ -34,7 +45,7 @@ include 'shared/header.php';
 <div class="section hero is-fullheight">
   <div class="container">
     <div class="column is-6 is-offset-2 has-text-left">
-    <h1 class="title is-1 has-text-centered"> <b> USER's  </b> Pictures</h1>
+    <h1 class="title is-1 has-text-centered"> <b> <?php  echo "$myFriend->Name 's pictures"; ?>  </b> Pictures</h1>
     <hr>
   </div>  <!-- COLUMN -->
 
@@ -73,6 +84,8 @@ include 'shared/header.php';
         <div class="thumbnail">
             <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
         </div>
+
+        
       
       </div>
       </div>
@@ -87,7 +100,7 @@ include 'shared/header.php';
 
     <h2 class="title is-5"> Comments:</h2>
     <div class="vertical-scroll-wrapper has-background-light">
-
+        
             <div class="box "> 
             <a href=""> User <small>  <em> (11/11/1984 )  </em>  </small> </a>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>

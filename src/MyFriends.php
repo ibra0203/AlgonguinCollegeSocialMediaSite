@@ -63,14 +63,7 @@ include 'shared/header.php';
       </h3>
       </div>
 
-      <?php if ($addMsg != '') {
-          echo "
-          <div class='flash-msg column is-fullwidth  notification is-success'>
-            $addMsg
-          <button id='delete' class='delete'></button>
-          
-          </div>";
-        }  ?>
+      
 
       <br>
       <br>
@@ -79,6 +72,14 @@ include 'shared/header.php';
   <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
   method="post"
 >
+
+<?php if ($addMsg != '') {
+          echo "
+          <div class='flash-msg column is-fullwidth  notification is-success'>
+            $addMsg
+          <button id='delete' class='delete'></button>
+          </div>";
+        }  ?>
 
 <div class="columns is-5">
     <div class="column has-background-grey-lighter">
@@ -99,7 +100,7 @@ include 'shared/header.php';
                   foreach ($myFriends as $user) {
                     echo "<tr>";
                     echo "<td>
-                            <a href = '?friendId=$user->UserId' > 
+                            <a href = 'FriendPictures.php?friendId=$user->UserId' > 
                                 $user->Name
                             </a>
                           </td>";

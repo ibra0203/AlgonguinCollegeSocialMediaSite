@@ -9,9 +9,6 @@
   // Status_Code
   // Description
 
-  function getFriends($user) {
-  
-  }
 
   function getFriendRequests($db, $user) {
     $st = "SELECT `User`.`UserId`, `Friendship`.`*`,`User`.`Name`
@@ -65,4 +62,12 @@
     $prepSt->execute(['friend_id'=>$friend_id,'current_user'=>$user_id]);
   }
 
+  function getFriendById($db , $friend_id) {
+    $st = "SELECT * FROM User
+           WHERE UserId = :id";
+    $prepSt =$db->prepare($st);
+    $prepSt->execute(['id'=>$friend_id]);
+    $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
+    return $res[0];
+  }
 ?>
