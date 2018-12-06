@@ -1,5 +1,7 @@
 
 function onUserSearch(str) {
+    str=filterString(str);
+    console.log(str);
     if (str.length == 0) { 
         searchList = document.getElementById('search-result');
                 searchList.innerHTML="";
@@ -13,6 +15,7 @@ function onUserSearch(str) {
                 searchList.innerHTML="";
                 for(i=0; i<users.length; i++)
                 {
+                    
                     var li = document.createElement('li');
                     li.className = "has-text-centered ";
                     li.innerHTML="<p><b class='has-background-warning'>"+str+"</b>"+users[i].substring(str.length)+"</p>";

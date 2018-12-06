@@ -5,3 +5,16 @@
  */
 
 
+function filterString(s) {
+    const map = {
+      '&': '',
+      '<': '',
+      '>': '',
+      '"': '',
+      "'": '',
+      "/": '',
+      "\\": ''
+  };
+  const reg = /[&<>"'/]/ig;
+  return s.replace(reg, (match)=>(map[match]));
+}
