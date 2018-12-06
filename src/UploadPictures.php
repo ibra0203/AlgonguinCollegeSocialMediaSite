@@ -118,7 +118,7 @@ include 'shared/header.php';
                         <label class="file-label">
                           <input 
                               type="file" 
-                              class="" 
+                              class="file-input" 
                               name="txtUpload[]"
                               multiple 
                               >   
