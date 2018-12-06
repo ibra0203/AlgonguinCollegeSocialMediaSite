@@ -9,3 +9,4 @@ src/db_connection.ini
 src/THUMB_DESTINATION
 src/ORIGINAL_IMAGE_DESTIONATION
 src/IMAGE_DESTIONATION
+src/db_connection.ini
