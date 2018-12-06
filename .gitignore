@@ -1,5 +1,6 @@
 *.docx
 *.xlsx
+.DS_Store
 src/nbproject
 src/db_connection.ini
 test.sql
