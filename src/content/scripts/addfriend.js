@@ -1,7 +1,6 @@
 
 function onUserSearch(str) {
     str=filterString(str);
-    console.log(str);
     if (str.length == 0) { 
         searchList = document.getElementById('search-result');
                 searchList.innerHTML="";
