@@ -16,7 +16,7 @@ $successNotification = '';
 
 if (isset ($_POST['submit'])) {
   $updatedAlbums = $_POST['albums'];
-  if(count($album) > 0) {
+  if(count($albums) > 0) {
     foreach ($updatedAlbums as $album) {
       $album_id = explode(",", $album)[0];
       $access = explode(",", $album)[1];
@@ -30,6 +30,8 @@ if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
   }
 
+
+  
   // $album =  $_GET['deleteAlbum'];
 include 'shared/header.php';
 

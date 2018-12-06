@@ -5,10 +5,13 @@ ValidateUser();
 
 include 'helpers/validation.php';
 include 'helpers/util.php';
-include 'helpers/picturefunctions.php';
-include 'helpers/pictures.php';
+<<<<<<< HEAD
+=======
 include 'helpers/albums.php';
+include 'helpers/pictures.php';
 include 'shared/db.php';
+>>>>>>> 60141131d72208a8330ab47f95aa400762622b8c
+include 'helpers/picturefunctions.php';
 
 define('ORIGINAL_IMAGE_DESTINATION', "./Pictures/OriginalPictures");
 define('IMAGE_DESTINATION', "./Pictures/AlbumPictures");
@@ -20,9 +23,13 @@ define('IMAGE_MAX_HEIGHT', 800);
 define('THUMB_MAX_WIDTH', 100);
 define('THUMB_MAX_HEIGHT', 100);
 
+<<<<<<< HEAD
 
 
 $owner = $_SESSION['login'];
+=======
+
+>>>>>>> 60141131d72208a8330ab47f95aa400762622b8c
 
 $imgTitle = getPostSafely('imageTitle');
 $description = getPostSafely('description');

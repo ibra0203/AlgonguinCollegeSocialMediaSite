@@ -1,20 +1,22 @@
-<?php 
+<?php
 include 'helpers/protected.php';
 session_start();
 ValidateUser();
 
 include 'helpers/validation.php';
 include 'helpers/friends.php';
+include 'helpers/databaseHelper.php';
 include 'shared/db.php';
-include 'helpers/albums.php';
+// include 'helpers/albums.php';
 
 
 $owner = $_SESSION['login'];
 
 
 $friendId =  $_GET['friendId'];
-$myFriend = getFriendById($db , $friendId);
-$albums = getAlbumsByUser($friendId, $db);
+$userId = $_SESSION['login'];
+//$name = getNameFromId($_SESSION('login'), $db);
+$myFriend = getFriendById($db, $friendId, getNameFromId($_SESSION['login'], $db));
 
 if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
