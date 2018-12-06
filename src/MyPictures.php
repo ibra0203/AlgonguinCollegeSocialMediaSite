@@ -12,18 +12,43 @@ include 'helpers/databaseHelper.php';
 
 $owner = $_SESSION['login'];
 $albums = getAlbumsByUser($owner, $db);
+$displayedPic=null;
+$comments=null;
+if(isset($_POST['albumId']))
+{
+    consoleLog("ALBUM ID");
+    // get current album for description
+    $album_id = getPostSafely('albumId');
+    $displayedAlbum = getAlbumById($album_id, $db);
+    $_SESSION['my-albumId']=getPostSafely('albumId');
+    $albumPictures = getPicturesByAlbum($db, $album_id);
+    $displayedPic=null;
+    if(count($albumPictures)>0)
+    {
+        $displayedPic = $albumPictures[0];
+        $picture_id = $displayedPic->getId();
+        $_SESSION['my-pictureId'] = $picture_id;
+    }
 
-// get current album for description
-$album_id = $_POST['albumId'];
-$displayedAlbum = getAlbumById($album_id, $db);
+}
+ else if(isset($_SESSION['my-albumId']))
+     {
+         $album_id = $_SESSION['my-albumId'];
+     }
+     
+    if(isset($_POST['pictureId']))
+    {
+        $picture_id = getPostSafely('pictureId');
+        $_SESSION['my-pictureId'] = $picture_id;
+    }
+    else if(isset($_SESSION['my-pictureId']))
+    {
+        $picture_id =  $_SESSION['my-pictureId'];
+    }
 
-
-// get picture id 
- $picture_id = $_POST['pictureId'];
 // get current
 // get the pictures for that album
 $albumPictures = getPicturesByAlbum($db, $album_id);
-$displayedPic=null;
 
 if(!isset($picture_id))
 {
@@ -32,7 +57,7 @@ if(!isset($picture_id))
         $displayedPic = $albumPictures[0];
         $picture_id = $displayedPic->getId();
     }
-}
+}//a picture is displayed
 else{
 // find displayed picture from the album pics
 foreach($albumPictures as $p)
@@ -43,14 +68,21 @@ foreach($albumPictures as $p)
         break;
     }
 }
-}
 if (isset($_POST["addComment"]) ){
-   
-  // $comment_text = $_POST['commentBox'];
-  // $author_id = $owner;
-  // // $picture_id = 
-  //  //createComment($db, $author_id, $picture_id, $comment_text);
+
+
+       $comment_text = getPostSafely('commentBox');
+       $author_id = $owner;
+
+       createComment($db, $author_id, $picture_id, $comment_text);
+       header("Location: MyPictures.php");
+
+    }
+    
+    $comments = getCommentsOnPicture($db, $picture_id);
+
 }
+
 
 ?>
 
@@ -88,8 +120,10 @@ if (isset($_POST["addComment"]) ){
                 </div>
       </div>   
   </div>
-  
-
+    </form>
+      
+ <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
+      method="post"/>
 <?php
     $noAlbumPic = "https://via.placeholder.com/800x500.png/09f/fff";
     $albumSrcPic = $noAlbumPic;
@@ -106,6 +140,7 @@ if (isset($_POST["addComment"]) ){
       <div class=" horizontal-scroll-wrapper">       
 HTML;
 
+
      
        foreach($albumPictures as $pic)
        {
@@ -118,9 +153,13 @@ HTML;
 HTML;
        }
 ?>
-      
+  </form> 
+    <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
+      method="post"/>
       </div>
       </div>
+  
+      <?php if(isset($picture_id)): ?>
       <div class="column ">
       <div class="">
       <h2 class="title is-5"> Description:</h2>
@@ -133,15 +172,28 @@ HTML;
         <hr>
       </div>
 
+           
     <h2 class="title is-5"> Comments:</h2>
-    <div class="vertical-scroll-wrapper has-background-light">
-
+    <?php
+        if(isset($comments))
+        {
+    echo '';
+        
+                 foreach ($comments as $comment)
+                 {
+                     $name = getNameFromId($comment->Author_Id ,$db); 
+                     //$st = "INSERT INTO COMMENT(`Author_Id`, `Picture_Id`, `Comment_Text`, `Date`)
+         echo <<< HTML
+<div class="vertical-scroll-wrapper has-background-light">
             <div class="box "> 
-            <a href=""> User <small>  <em> (11/11/1984 )  </em>  </small> </a>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-            </div> 
-            <!-- foreach ($comments as $comment) {} -->
-    </div>
+            <a href=""> {$name} <small>  <em> {$comment->Date} </em>  </small> </a>
+            <p>{$comment->Comment_Text}</p>
+            </div> </div>
+HTML;
+                 }
+        }
+            ?>
+    
 
     <br>
 
@@ -154,7 +206,10 @@ HTML;
             type="submit" value="Add comment" name="addComment" >        
         </div>
       </div>
-      </form>
+      <?php endif; ?>
+    
   </div>    <!-- CONTAINER -->
+  
 </div>      <!-- HERO -->
+  </form> 
 <?php include 'shared/footer.php'; ?>

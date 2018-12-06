@@ -1,6 +1,6 @@
 .vertical-scroll-wrapper {
-  overflow-y: scroll;
-  white-space: nowrap;
+  /*overflow-y: scroll;*/
+  white-space: wrap;
   max-height: 350px;
   padding: 1em;
   border-radius: 10px;
