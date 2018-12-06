@@ -17,7 +17,7 @@ include 'helpers/friends.php';
 $owner = $_SESSION['login'];
 $friendId =  $_GET['friendId'];
 $myFriend = getFriendById($db, $friendId, getNameFromId($owner, $db));
-$albums = getAlbumsByUser($friendId, $db);
+$albums = getSharedAlbumsByUser($friendId, $db);
 $displayedPic=null;
 $comments=null;
 if(isset($_POST['albumId']))

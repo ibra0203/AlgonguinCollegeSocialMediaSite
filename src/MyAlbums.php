@@ -6,6 +6,8 @@ ValidateUser();
 // include 'helpers/validation.php';
 include 'helpers/util.php';
 include 'helpers/albums.php';
+include 'helpers/pictures.php';
+
 include 'helpers/databaseHelper.php';
 
 ## declares database as $db
@@ -95,15 +97,16 @@ include 'shared/header.php';
           </thead>
           <tbody>
           <?php
-
+           
           foreach( $albums as $album) {
+            $picCount = count(getPicturesByAlbum($db, $album->Album_Id));
             $private = $album ->Accessibility_Code == 'private' ? 'selected': '';
             $public  = $album ->Accessibility_Code == 'shared' ? 'selected': '';
             // $public = 'selected';
             echo "<tr>";
             echo "<td> $album->Title</td>";
             echo "<td> $album->Date_Updated</td>";
-            echo "<td> 23 </td>";
+            echo "<td> $picCount </td>";
             echo "<td>             
                     <div class='select is-rounded'>
                     <select name = albums[] >

@@ -9,6 +9,14 @@
         $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
         return $res;
     }
+    function getSharedAlbumsByUser($id, $db)
+    {
+        $st ='SELECT * from Album WHERE Owner_Id = :userId AND Accessibility_Code="shared"';
+        $prepSt = $db->prepare($st);
+        $prepSt->execute(['userId' => $id]);
+        $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
+        return $res;
+    }
 
     function getAlbumById($album_id, $db)
     {
