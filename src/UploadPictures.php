@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include_once ("ConstantsAndSettings.php");
@@ -15,21 +16,18 @@ $description = getPostSafely('description');
 $albums = getAlbumsByUser($owner, $db);
 // TODO Parse Images
 $error = '';
-print_r($_FILES['txtUpload']['name']);
 if (isset($_POST['submit'])) {
   $albumId = $_POST['albumId'];
   for ($j = 0; $j < count($_FILES['txtUpload']['name']); $j++) {
     if ($_FILES['txtUpload']['error'][$j] == 0) {
-        $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION, $j);
+        $filePath = save_uploaded_file(ORIGINAL_PICTURES_DIR, $j);
         $imageDetails = getimagesize($filePath);
         if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes)) {
-            resamplePicture($filePath, IMAGE_DESTINATION, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
-            resamplePicture($filePath, THUMB_DESTINATION, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
+            resamplePicture($filePath, ALBUM_PICTURES_DIR, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+            resamplePicture($filePath, ALBUM_THUMBNAILS_DIR, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
             $pathInfo = pathinfo($filePath);
             $fileName = $pathInfo['basename'];
-            $ext = $pathInfo['extension'];
-            $filename = $fileName . $ext;
-            addPicture($db, $filename, $imgTitle, $description, $albumId );
+            addPicture($db, $fileName, $imgTitle, $description, $albumId );
         } else {
             $error = "Uploaded file is not a supported type";
             unlink($filePath);
