@@ -29,6 +29,7 @@ if (isset($_POST['deny'])) {
     denyFriendRequest($db, $requester_id, $owner);
     
   }
+  header("Location: MyFriends.php");
 }
 
 // accept friendships
@@ -54,7 +55,10 @@ if (isset($_POST['accept'])) {
       header("Location: MyFriends.php");
   #don't set the friend accepting message straight away, refresh the page and send a Get request with the names of the new friends.
   else
-    header("Location: MyFriends.php?acceptedReq=".$acceptedRequests);
+  {
+      $_SESSION['acceptedRequests'] = $acceptedRequests;
+    header("Location: MyFriends.php?acceptedReq=1");
+  }
 }
 
 
@@ -68,13 +72,16 @@ if (isset($_POST['unfriend'])) {
     $i++;
   }
   $iS = (string)$i;
+  $_SESSION['unfriended'] = true;
     header("Location: MyFriends.php?unfriended=".$iS);
   
 }
 
 if(isset($_GET['acceptedReq']))
 {
-    $accReq = $_GET['acceptedReq'];
+   if(isset($_SESSION['acceptedRequests']))
+   {
+    $accReq = $_SESSION['acceptedRequests'];
   
     $reqArray = explode(',', $accReq);
     
@@ -97,23 +104,29 @@ if(isset($_GET['acceptedReq']))
                 $remaining =(string) (count($reqArray) - ($i+1));
                 if($remaining =="1")
                     $newFriends .= " and ".$remaining." other.";
-                else
+                else if($remaining >1)
                  $newFriends .= " and ".$remaining." others.";
                 break;
             }
         }
         $addMsg = "Friend Request(s) Accepted. You're now friends with ".$newFriends;
+        unset($_SESSION['acceptedRequests']);
+   }
     
 }
 
 if(isset($_GET['unfriended']))
 {
-    $unfriendCount = (int) $_GET['unfriended'];
-    $unfriendCountS = (string) $unfriendCount;
-    if($unfriendCount == 1)
-            $unfriendMsg = "Removed (1) friend from your list.";
-    else if($unfriendCount > 1)
-            $unfriendMsg = "Removed ($unfriendCountS) friends from your list.";
+    if(isset($_SESSION['unfriended']))
+    {
+        $unfriendCount = (int) $_GET['unfriended'];
+        $unfriendCountS = (string) $unfriendCount;
+        if($unfriendCount == 1)
+                $unfriendMsg = "Removed (1) friend from your list.";
+        else if($unfriendCount > 1)
+                $unfriendMsg = "Removed ($unfriendCountS) friends from your list.";
+        unset($_SESSION['unfriended']);
+    }
 }
 
 include 'shared/header.php';
