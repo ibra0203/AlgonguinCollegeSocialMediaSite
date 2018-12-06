@@ -46,6 +46,9 @@
 
     function deleteAlbum($db, $owner, $album) {
         
+        //remove comments first 
+        
+
         // remove pictures first
         $st ="DELETE from `Picture`
              WHERE `Picture`.`Album_Id` = :album ";

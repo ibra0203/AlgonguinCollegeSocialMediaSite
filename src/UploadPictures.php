@@ -1,11 +1,12 @@
 
 <?php
 session_start();
+include 'helpers/util.php';
 include_once ("ConstantsAndSettings.php");
 include 'helpers/protected.php';
 ValidateUser();
 include 'helpers/validation.php';
-include 'helpers/util.php';
+
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
 include 'helpers/picturefunctions.php';
@@ -58,7 +59,7 @@ include 'shared/header.php';
         action="<?php echo $_SERVER['PHP_SELF']?>"
         method="POST"
         class="inputForm"
-         enctype="multipart/form-data"
+        enctype="multipart/form-data"
         >
 
       <div class="field is-horizontal">
@@ -169,15 +170,15 @@ include 'shared/header.php';
 </div>      <!-- HERO -->
 
 <script>
-// let uploadImg = document.querySelector('.file-upload');
-// let fileLabel = document.querySelector('.file-text');
-// const fileBtn = document.querySelector('#files');
-// uploadImg.addEventListener('change', (e) => {
-//       let text = 'Choose a File';
-//       const files = Array.from(e.target.files);
-//       files.length !== 0 ? text = files[0].name : 'Upload Images...';
-//       fileLabel.innerHTML = text;
-//       fileBtn.classList.add('is-success');
-// });
+let uploadImg = document.querySelector('.file-input');
+let fileLabel = document.querySelector('.file-text');
+const fileBtn = document.querySelector('#files');
+uploadImg.addEventListener('change', (e) => {
+      let text = 'Choose a File';
+      const files = Array.from(e.target.files);
+      files.length !== 0 ? text = files[0].name : 'Upload Images...';
+      fileLabel.innerHTML = text;
+      fileBtn.classList.add('is-success');
+});
 </script>
 <?php include 'shared/footer.php'; ?>

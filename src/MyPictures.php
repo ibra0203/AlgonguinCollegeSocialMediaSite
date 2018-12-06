@@ -1,6 +1,7 @@
 <?php 
 
 session_start();
+include 'helpers/util.php';
 include 'helpers/validation.php';
 include 'shared/db.php';
 include 'shared/header.php';
@@ -86,6 +87,12 @@ if (isset($_POST["addComment"]) ){
 
 ?>
 
+<style>
+
+ 
+
+ 
+</style>
 
 <div class="section hero is-fullheight">
   <div class="container">
@@ -125,7 +132,7 @@ if (isset($_POST["addComment"]) ){
  <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
       method="post"/>
 <?php
-    $noAlbumPic = "https://via.placeholder.com/800x500.png/09f/fff";
+    $noAlbumPic = "";
     $albumSrcPic = $noAlbumPic;
     if($displayedPic !=null)
     {
@@ -134,10 +141,31 @@ if (isset($_POST["addComment"]) ){
    echo <<< HTML
 <div class="columns is-2">
       <div class="column is-8">
-      <img src="{$albumSrcPic}" alt="">
-      <br>
-      <br>
-      <div class=" horizontal-scroll-wrapper">       
+      <div class="main-img-container">
+           <center>
+           <img src="{$albumSrcPic}" class="main-img" alt=""></center>
+            <div class=" middle">
+                    <div class="text">
+                    <a href="" class="clockwise">
+                    <i class="fas fa-undo  fa-flip-horizontal	"></i>
+                    </a>
+                    <a class="download-image
+                         ">
+                    <i class="fas fa-lg fa-download"></i>
+                    </a>
+
+                <a href="" class="counter-clockwise">
+                    <i class="fas fa-undo "></i>
+                </a>
+                    <input type="hidden" name="delIMg" value="default"  class="deleteInput"/>
+                    <a class="delete-image">
+                    <i class="fas fa-trash "></i>
+                    </a>
+                </div>
+        </div>
+        </div>
+      <div class=" horizontal-scroll-wrapper">
+             
 HTML;
 
 
@@ -158,7 +186,7 @@ HTML;
       method="post"/>
       </div>
       </div>
-  
+
       <?php if(isset($picture_id)): ?>
       <div class="column ">
       <div class="">
@@ -171,9 +199,9 @@ HTML;
         </p>
         <hr>
       </div>
-
            
     <h2 class="title is-5"> Comments:</h2>
+    <div class="vertical-scroll-wrapper has-background-light">
     <?php
         if(isset($comments))
         {
@@ -184,20 +212,19 @@ HTML;
                      $name = getNameFromId($comment->Author_Id ,$db); 
                      //$st = "INSERT INTO COMMENT(`Author_Id`, `Picture_Id`, `Comment_Text`, `Date`)
          echo <<< HTML
-<div class="vertical-scroll-wrapper has-background-light">
-            <div class="box "> 
+
+            <div class="box"> 
             <a href=""> {$name} <small>  <em> {$comment->Date} </em>  </small> </a>
             <p>{$comment->Comment_Text}</p>
-            </div> </div>
+            </div>       
 HTML;
                  }
         }
             ?>
-    
-
     <br>
-
-    <div class="field">
+      </div>
+      <?php endif; ?>
+      <div class="field">
         <textarea name="commentBox" class="textarea" placeholder="leave a comment"></textarea>
         </div>
         <div class="control has-text-right">
@@ -205,11 +232,25 @@ HTML;
             class="button is-success"
             type="submit" value="Add comment" name="addComment" >        
         </div>
-      </div>
-      <?php endif; ?>
-    
   </div>    <!-- CONTAINER -->
   
 </div>      <!-- HERO -->
   </form> 
+  <script type="text/javascript" src="content/scripts/images.js"></script>
+  <script>
+
+  const download = document.querySelector('.download-image');
+
+    download.addEventListener('click', (e) => {
+    e.preventDefault();
+    const title = document.querySelector('.main-img');
+    const item = title.src;
+    console.log(item);
+    let a = document.createElement('a')
+    a.href = item;
+    a.download = item;
+    a.click()
+    });
+  
+  </script>
 <?php include 'shared/footer.php'; ?>

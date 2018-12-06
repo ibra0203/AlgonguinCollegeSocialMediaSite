@@ -129,7 +129,7 @@ if (isset($_POST["addComment"]) ){
    <form id="form" action="<?php echo $_SERVER['PHP_SELF'].'?friendId='.$friendId?>"
       method="post">
 <?php
-    $noAlbumPic = "https://via.placeholder.com/800x500.png/09f/fff";
+    $noAlbumPic = "";
     $albumSrcPic = $noAlbumPic;
     if($displayedPic !=null)
     {
@@ -138,7 +138,9 @@ if (isset($_POST["addComment"]) ){
    echo <<< HTML
 <div class="columns is-2">
       <div class="column is-8">
-      <img src="{$albumSrcPic}" alt="">
+      <center>
+      <img src="{$albumSrcPic}" class="main-img" alt="">
+      </center>
       <br>
       <br>
       <div class=" horizontal-scroll-wrapper">       
@@ -178,6 +180,7 @@ HTML;
 
            
     <h2 class="title is-5"> Comments:</h2>
+    <div class="vertical-scroll-wrapper has-background-light">
     <?php
         if(isset($comments))
         {
@@ -188,17 +191,17 @@ HTML;
                      $name = getNameFromId($comment->Author_Id ,$db); 
                      //$st = "INSERT INTO COMMENT(`Author_Id`, `Picture_Id`, `Comment_Text`, `Date`)
          echo <<< HTML
-<div class="vertical-scroll-wrapper has-background-light">
+
             <div class="box "> 
             <a href=""> {$name} <small>  <em> {$comment->Date} </em>  </small> </a>
             <p>{$comment->Comment_Text}</p>
-            </div> </div>
+            </div> 
 HTML;
                  }
         }
             ?>
     
-
+    </div>
     <br>
 
     <div class="field">
@@ -209,7 +212,7 @@ HTML;
             class="button is-success"
             type="submit" value="Add comment" name="addComment" >        
         </div>
-      </div>
+      
       <?php endif; ?>
     
   </div>    <!-- CONTAINER -->

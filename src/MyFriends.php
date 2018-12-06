@@ -208,6 +208,7 @@ include 'shared/header.php';
         <div class="control has-text-right">
           <input
             class="button is-danger "
+            onclick = 'onUnfriend()'
             type="submit" value="Unfriend Selected" name="unfriend" >        
         </div>
   </div>
@@ -244,6 +245,7 @@ include 'shared/header.php';
             type="submit" value="Accept Selected" name="accept" >
           <input
           class="button is-danger "
+          
           type="submit" value="Deny Selected" name="deny" >          
         </div>
   </div>
@@ -256,5 +258,10 @@ include 'shared/header.php';
 
 
 <script type="text/javascript" src="content/scripts/removeNotificaiton.js"></script>
+<script>
+ function onUnfriend() {
+    return confirm("are you sure you to unfriend these people? ") ? true : false;
+  }
+</script>
 <!-- FOOTER -->
 <?php include 'shared/footer.php'; ?>

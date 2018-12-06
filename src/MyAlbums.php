@@ -1,10 +1,11 @@
 <?php 
 session_start();
+include 'helpers/util.php';
 include 'helpers/protected.php';
 ValidateUser();
 
 // include 'helpers/validation.php';
-include 'helpers/util.php';
+
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
 
@@ -117,6 +118,7 @@ include 'shared/header.php';
             </td>";
             echo "<td>
                   <a  href = '?deleteAlbum=$album->Album_Id'
+                          onclick='return onDelete()'
                           class='trash button is-warning ' 
                           name = $album->Album_Id   >
                   <span class='icon is-large '>
@@ -139,7 +141,11 @@ include 'shared/header.php';
 
 <!-- get rid of notifications -->
 <script type="text/javascript" src="content/scripts/removeNotificaiton.js"></script>
-
+<script>
+ function onDelete() {
+    return confirm("are you sure you want to delete this album? ") ? true : false;
+  }
+</script>
 
 <?php include 'shared/footer.php'; ?>
 

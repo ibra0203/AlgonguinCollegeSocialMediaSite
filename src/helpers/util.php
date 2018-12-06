@@ -1,5 +1,5 @@
 <?php
-
+    error_reporting(0);
     function getPostSafely($name, $ifNotFound=NULL)
     {
         $data = $ifNotFound;

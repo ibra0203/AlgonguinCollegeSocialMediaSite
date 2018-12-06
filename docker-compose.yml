@@ -6,15 +6,15 @@ services:
       - "13306:3306"
     environment:
       - MYSQL_DATABASE=CST8257
-      - MYSQL_USER=PHPSCRIPT
-      - MYSQL_PASSWORD=1234
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ./db/schema.sql:/docker-entrypoint-initdb.d/CST8257.sql
   web:
     build: ./server
     ports:
-      - '80:80'
+      - '5000:80'
     volumes:
       - ./src:/var/www/html/
     depends_on:
