@@ -24,7 +24,7 @@ $error = '';
 print_r($_FILES['txtUpload']['name']);
 
 if (isset($_POST['submit'])) {
-  $albumId = $_POST['albumId'][0];
+  $albumId = $_POST['albumId'];
   for ($j = 0; $j < count($_FILES['txtUpload']['name']); $j++) {
     if ($_FILES['txtUpload']['error'][$j] == 0) {
         $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION, $j);
@@ -36,10 +36,10 @@ if (isset($_POST['submit'])) {
             resamplePicture($filePath, THUMB_DESTINATION, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
 
             $pathInfo = pathinfo($filePath);
-            $fileName = $pathInfo['name'];
+            $fileName = $pathInfo['basename'];
             $ext = $pathInfo['extension'];
             $filename = $fileName . $ext;
-            echo $filename;
+
             addPicture($db, $filename, $imgTitle, $description, $albumId );
         } else {
             $error = "Uploaded file is not a supported type";
@@ -107,15 +107,9 @@ include 'shared/header.php';
                   <div class="field-body">
                       <div id="files" class="file has-name is-fullwidth" >
                         <label class="file-label">
-<<<<<<< HEAD
-                          <input
-                              type="file"
-                              class=""
-=======
                           <input 
                               type="file" 
                               class="file-input" 
->>>>>>> 444c4fd0ee3157a54c3c0aecadc97b5079b1cee4
                               name="txtUpload[]"
                               multiple
                               >
