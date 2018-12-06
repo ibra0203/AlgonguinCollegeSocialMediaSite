@@ -1,4 +1,5 @@
 <?php 
+
 session_start();
 include 'helpers/validation.php';
 include 'shared/db.php';
@@ -16,7 +17,6 @@ $displayedPic=null;
 $comments=null;
 if(isset($_POST['albumId']))
 {
-    consoleLog("ALBUM ID");
     // get current album for description
     $album_id = getPostSafely('albumId');
     $displayedAlbum = getAlbumById($album_id, $db);

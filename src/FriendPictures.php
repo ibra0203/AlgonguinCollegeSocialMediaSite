@@ -1,161 +1,219 @@
 <?php
-include 'helpers/protected.php';
 session_start();
+include 'helpers/protected.php';
+
 ValidateUser();
 
 include 'helpers/validation.php';
-include 'helpers/friends.php';
-include 'helpers/databaseHelper.php';
 include 'shared/db.php';
-// include 'helpers/albums.php';
+include 'shared/header.php';
+include 'helpers/albums.php';
+include 'helpers/pictures.php';
+include 'helpers/Class_Lib.php';
+include 'helpers/comments.php';
+include 'helpers/databaseHelper.php';
+include 'helpers/friends.php';
 
 $owner = $_SESSION['login'];
 $friendId =  $_GET['friendId'];
 $myFriend = getFriendById($db, $friendId, getNameFromId($owner, $db));
+$albums = getAlbumsByUser($friendId, $db);
+$displayedPic=null;
+$comments=null;
+if(isset($_POST['albumId']))
+{
+    // get current album for description
+    $album_id = getPostSafely('albumId');
+    $displayedAlbum = getAlbumById($album_id, $db);
+    $_SESSION['frnd-albumId']=getPostSafely('albumId');
+    $albumPictures = getPicturesByAlbum($db, $album_id);
+    $displayedPic=null;
+    if(count($albumPictures)>0)
+    {
+        $displayedPic = $albumPictures[0];
+        $picture_id = $displayedPic->getId();
+        $_SESSION['frnd-pictureId'] = $picture_id;
+    }
 
-if (isset($album)) {
-  $deleteMsg = deleteAlbum($db, $owner, $album);
+}
+ else if(isset($_SESSION['frnd-albumId']))
+     {
+         $album_id = $_SESSION['frnd-albumId'];
+     }
+     
+    if(isset($_POST['pictureId']))
+    {
+        $picture_id = getPostSafely('pictureId');
+        $_SESSION['frnd-pictureId'] = $picture_id;
+    }
+    else if(isset($_SESSION['frnd-pictureId']))
+    {
+        $picture_id =  $_SESSION['frnd-pictureId'];
+    }
+
+// get current
+// get the pictures for that album
+$albumPictures = getPicturesByAlbum($db, $album_id);
+
+if(!isset($picture_id))
+{
+    if(count($albumPictures)>0)
+    {
+        $displayedPic = $albumPictures[0];
+        $picture_id = $displayedPic->getId();
+    }
+}//a picture is displayed
+else{
+// find displayed picture from the album pics
+foreach($albumPictures as $p)
+{
+    if($p->getId() == $picture_id)
+    {
+        $displayedPic = $p;
+        break;
+    }
+}
+if (isset($_POST["addComment"]) ){
+
+
+       $comment_text = getPostSafely('commentBox');
+       $author_id = $owner;
+
+       createComment($db, $author_id, $picture_id, $comment_text);
+       header("Location: FriendPictures.php?friendId=".$friendId);
+
+    }
+    
+    $comments = getCommentsOnPicture($db, $picture_id);
+
 }
 
-include 'shared/header.php';
+
 ?>
-<style>
-  .vertical-scroll-wrapper {
-    overflow-y: scroll;
-    white-space: nowrap;
-    max-height: 350px;
-    padding: 1em;
-    border-radius: 10px;
-  }
 
-  .horizontal-scroll-wrapper {
-    white-space: nowrap;
-    max-width: 100%;
-    /* height: 100%; */
-    overflow: hidden;
-    overflow-x: auto;
-    padding: 1em;
-    cursor: pointer;
-    margin: 0 10px;
-  }
-
-  .thumbnail {
-    max-width: 100px;
-    min-width:100px;
-    margin: 0 10px;
-    display: inline;
-  }
-</style>
 
 <div class="section hero is-fullheight">
   <div class="container">
+
+    <form id="form" action="<?php echo $_SERVER['PHP_SELF'].'?friendId='.$friendId?>"
+      method="post">
+
     <div class="column is-6 is-offset-2 has-text-left">
-    <h1 class="title is-1 has-text-centered"> <b> <?php  echo "$myFriend->Name 's pictures"; ?>  </b> Pictures</h1>
+    <h1 class="title is-1 has-text-centered"> <b> <?php echo $myFriend->Name;?>'s  </b> Pictures</h1>
     <hr>
   </div>  <!-- COLUMN -->
+
   <div class="column is-6  is-offset-2 ">
       <div class="field">
           <div class="select is-fullwidth">
-                  <select name="albumId">
+                  <select onchange='this.form.submit()' name="albumId">
                     <?php 
+                      echo "<option> select an album </option>";
                       foreach($albums as $album) {
-                        echo "<option value='$album->Album_Id'> $album->Title </option>";
+                        // $isSelected = $album->Album_Id == 
+                        $selected = $album ->Album_Id == $album_id ? 'selected': '';
+                        echo "<option  value='$album->Album_Id' $selected > 
+                        $album->Title 
+                              </option>";
                       }
                     ?>
                   </select>
                 </div>
                 <div class="icon is-small is-left">
+                  <!-- <i class="fas fa-images"></i> -->
                 </div>
-              
       </div>   
   </div>
-
-
-    <div class="columns is-2">
-      <div class="column is-8">
-      <img src="https://via.placeholder.com/800x500.png/09f/fff" alt="">
-      <br>
-      <br>
-      <div class=" horizontal-scroll-wrapper">
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        
+    </form>
       
+   <form id="form" action="<?php echo $_SERVER['PHP_SELF'].'?friendId='.$friendId?>"
+      method="post">
+<?php
+    $noAlbumPic = "https://via.placeholder.com/800x500.png/09f/fff";
+    $albumSrcPic = $noAlbumPic;
+    if($displayedPic !=null)
+    {
+        $albumSrcPic = $displayedPic->getAibumFilePath();
+    }
+   echo <<< HTML
+<div class="columns is-2">
+      <div class="column is-8">
+      <img src="{$albumSrcPic}" alt="">
+      <br>
+      <br>
+      <div class=" horizontal-scroll-wrapper">       
+HTML;
+
+
+     
+       foreach($albumPictures as $pic)
+       {
+           $picId = $pic->getId();
+           $picThumb = $pic->getThumbnailFilePath();
+        echo <<< HTML
+        <div class="thumbnail">
+            <button class = "hid-btn" type="submit" name="pictureId" value={$picId}><img src="{$picThumb}" alt=""></button>
+        </div>           
+HTML;
+       }
+?>
+  </form> 
+     <form id="form" action="<?php echo $_SERVER['PHP_SELF'].'?friendId='.$friendId?>"
+      method="post">
       </div>
       </div>
+  
+      <?php if(isset($picture_id)): ?>
       <div class="column ">
       <div class="">
       <h2 class="title is-5"> Description:</h2>
         <p class="">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea eos corrupti tenetur porro optio quos eveniet impedit, consectetur magnam repudiandae, error ullam soluta accusantium doloremque aliquam saepe temporibus, provident ipsa?
+         <?php
+         if(isset($displayedPic))
+         echo $displayedPic->getDescription(); 
+         ?>          
         </p>
         <hr>
       </div>
 
+           
     <h2 class="title is-5"> Comments:</h2>
-    <div class="vertical-scroll-wrapper has-background-light">
+    <?php
+        if(isset($comments))
+        {
+    echo '';
         
+                 foreach ($comments as $comment)
+                 {
+                     $name = getNameFromId($comment->Author_Id ,$db); 
+                     //$st = "INSERT INTO COMMENT(`Author_Id`, `Picture_Id`, `Comment_Text`, `Date`)
+         echo <<< HTML
+<div class="vertical-scroll-wrapper has-background-light">
             <div class="box "> 
-            <a href=""> User <small>  <em> (11/11/1984 )  </em>  </small> </a>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-            </div> 
-
-            <div class="box "> 
-            <a href=""> User <small>  <em> (11/11/1984 )  </em>  </small> </a>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-            </div> 
-
-            <div class="box "> 
-            <a href=""> User <small>  <em> (11/11/1984 )  </em>  </small> </a>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-            </div> 
-
-            <div class="box "> 
-            <a href=""> User <small>  <em> (11/11/1984 )  </em>  </small> </a>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-            </div>   
-            
-                     
-    </div>
+            <a href=""> {$name} <small>  <em> {$comment->Date} </em>  </small> </a>
+            <p>{$comment->Comment_Text}</p>
+            </div> </div>
+HTML;
+                 }
+        }
+            ?>
+    
 
     <br>
 
     <div class="field">
-        <textarea class="textarea" placeholder="leave a comment"></textarea>
+        <textarea name="commentBox" class="textarea" placeholder="leave a comment"></textarea>
         </div>
         <div class="control has-text-right">
           <input
             class="button is-success"
-            type="submit" value="Add comment" name="unfriend" >        
+            type="submit" value="Add comment" name="addComment" >        
         </div>
       </div>
+      <?php endif; ?>
+    
   </div>    <!-- CONTAINER -->
+  
 </div>      <!-- HERO -->
+  </form> 
 <?php include 'shared/footer.php'; ?>

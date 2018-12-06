@@ -1,10 +1,19 @@
 <?php
-session_start();
+if(session_id() == '') {
+    session_start();
+}
 #if not in MyPictures.php, remove album and picture info from session.
 if(basename($_SERVER['PHP_SELF']) !== 'MyPictures.php')
 {
     unset($_SESSION['my-pictureId']);
     unset($_SESSION['my-albumId']);
+
+}
+#Do the same for FriendPictures.php
+if(basename($_SERVER['PHP_SELF']) !== 'FriendPictures.php')
+{
+    unset($_SESSION['frnd-pictureId']);
+    unset($_SESSION['frnd-albumId']);
 
 }
 
