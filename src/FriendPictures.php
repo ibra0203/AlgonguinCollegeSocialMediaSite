@@ -9,14 +9,9 @@ include 'helpers/databaseHelper.php';
 include 'shared/db.php';
 // include 'helpers/albums.php';
 
-
 $owner = $_SESSION['login'];
-
-
 $friendId =  $_GET['friendId'];
-$userId = $_SESSION['login'];
-//$name = getNameFromId($_SESSION('login'), $db);
-$myFriend = getFriendById($db, $friendId, getNameFromId($_SESSION['login'], $db));
+$myFriend = getFriendById($db, $friendId, getNameFromId($owner, $db));
 
 if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
