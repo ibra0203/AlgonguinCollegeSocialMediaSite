@@ -1,45 +1,34 @@
 <?php
 session_start();
 include_once ("ConstantsAndSettings.php");
-
 include 'helpers/protected.php';
 ValidateUser();
-
 include 'helpers/validation.php';
 include 'helpers/util.php';
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
 include 'helpers/picturefunctions.php';
 include 'shared/db.php';
-
 $owner = $_SESSION['login'];
-
 $imgTitle = getPostSafely('imageTitle');
 $description = getPostSafely('description');
-
 $albums = getAlbumsByUser($owner, $db);
-
 // TODO Parse Images
 $error = '';
 print_r($_FILES['txtUpload']['name']);
-
 if (isset($_POST['submit'])) {
-  $albumId = $_POST['albumId'][0];
+  $albumId = $_POST['albumId'];
   for ($j = 0; $j < count($_FILES['txtUpload']['name']); $j++) {
     if ($_FILES['txtUpload']['error'][$j] == 0) {
         $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION, $j);
-
         $imageDetails = getimagesize($filePath);
-
         if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes)) {
             resamplePicture($filePath, IMAGE_DESTINATION, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
             resamplePicture($filePath, THUMB_DESTINATION, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
-
             $pathInfo = pathinfo($filePath);
-            $fileName = $pathInfo['name'];
+            $fileName = $pathInfo['basename'];
             $ext = $pathInfo['extension'];
             $filename = $fileName . $ext;
-            echo $filename;
             addPicture($db, $filename, $imgTitle, $description, $albumId );
         } else {
             $error = "Uploaded file is not a supported type";
@@ -56,9 +45,7 @@ if (isset($_POST['submit'])) {
   // exit();
   }
 }
-
 include 'shared/header.php';
-
 // var_dump($_POST);
 // var_dump($_FILES);
 ?>
@@ -107,15 +94,9 @@ include 'shared/header.php';
                   <div class="field-body">
                       <div id="files" class="file has-name is-fullwidth" >
                         <label class="file-label">
-<<<<<<< HEAD
-                          <input
-                              type="file"
-                              class=""
-=======
                           <input 
                               type="file" 
                               class="file-input" 
->>>>>>> 444c4fd0ee3157a54c3c0aecadc97b5079b1cee4
                               name="txtUpload[]"
                               multiple
                               >

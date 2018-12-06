@@ -6,3 +6,6 @@ src/db_connection.ini
 test.sql
 *.ini
 src/db_connection.ini
+src/THUMB_DESTINATION
+src/ORIGINAL_IMAGE_DESTIONATION
+src/IMAGE_DESTIONATION

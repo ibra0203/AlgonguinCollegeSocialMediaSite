@@ -21,5 +21,9 @@ RUN curl -fsSL 'https://xdebug.org/files/xdebug-2.5.1.tgz' -o xdebug.tar.gz \
     && rm -r xdebug \
     && docker-php-ext-enable xdebug
 
+RUN apt-get install -y libpng-dev
+RUN docker-php-ext-install gd
+  
+
 # Copy php.ini into image
 COPY php.ini.example /usr/local/etc/php/php.ini
