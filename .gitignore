@@ -4,3 +4,5 @@
 src/nbproject
 src/db_connection.ini
 test.sql
+*.ini
+src/db_connection.ini

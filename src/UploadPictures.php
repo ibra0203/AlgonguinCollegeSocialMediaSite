@@ -57,11 +57,10 @@ if (isset($_POST['submit'])) {
   }
 }
 
-
 include 'shared/header.php';
 
 // var_dump($_POST);
-//var_dump($_FILES);
+// var_dump($_FILES);
 ?>
 
 <div class="section hero is-fullheight">
@@ -108,9 +107,15 @@ include 'shared/header.php';
                   <div class="field-body">
                       <div id="files" class="file has-name is-fullwidth" >
                         <label class="file-label">
+<<<<<<< HEAD
                           <input
                               type="file"
                               class=""
+=======
+                          <input 
+                              type="file" 
+                              class="file-input" 
+>>>>>>> 444c4fd0ee3157a54c3c0aecadc97b5079b1cee4
                               name="txtUpload[]"
                               multiple
                               >
