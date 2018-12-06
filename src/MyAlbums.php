@@ -1,5 +1,8 @@
 <?php 
 session_start();
+include 'helpers/protected.php';
+ValidateUser();
+
 // include 'helpers/validation.php';
 include 'helpers/util.php';
 include 'helpers/albums.php';
@@ -13,10 +16,12 @@ $successNotification = '';
 
 if (isset ($_POST['submit'])) {
   $updatedAlbums = $_POST['albums'];
-  foreach ($updatedAlbums as $album) {
-    $album_id = explode(",", $album)[0];
-    $access = explode(",", $album)[1];    
-    changeAlbumPermissions($db, $access, $album_id);
+  if(count($albums) > 0) {
+    foreach ($updatedAlbums as $album) {
+      $album_id = explode(",", $album)[0];
+      $access = explode(",", $album)[1];
+      changeAlbumPermissions($db, $access, $album_id);
+    }
   }
 }
 
@@ -25,6 +30,8 @@ if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
   }
 
+
+  
   // $album =  $_GET['deleteAlbum'];
 include 'shared/header.php';
 

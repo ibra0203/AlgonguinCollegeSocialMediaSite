@@ -1,14 +1,26 @@
-<?php 
+<?php
+include 'helpers/protected.php';
+session_start();
+ValidateUser();
+
 include 'helpers/validation.php';
 include 'helpers/friends.php';
+include 'helpers/databaseHelper.php';
 include 'shared/db.php';
+// include 'helpers/albums.php';
+
+
+$owner = $_SESSION['login'];
+
 
 $friendId =  $_GET['friendId'];
-$myFriend = getFriendById($db , $friendId);
+$userId = $_SESSION['login'];
+//$name = getNameFromId($_SESSION('login'), $db);
+$myFriend = getFriendById($db, $friendId, getNameFromId($_SESSION['login'], $db));
 
 if (isset($album)) {
   $deleteMsg = deleteAlbum($db, $owner, $album);
-  }
+}
 
 include 'shared/header.php';
 ?>
@@ -46,6 +58,22 @@ include 'shared/header.php';
     <h1 class="title is-1 has-text-centered"> <b> <?php  echo "$myFriend->Name 's pictures"; ?>  </b> Pictures</h1>
     <hr>
   </div>  <!-- COLUMN -->
+  <div class="column is-6  is-offset-2 ">
+      <div class="field">
+          <div class="select is-fullwidth">
+                  <select name="albumId">
+                    <?php 
+                      foreach($albums as $album) {
+                        echo "<option value='$album->Album_Id'> $album->Title </option>";
+                      }
+                    ?>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                </div>
+              
+      </div>   
+  </div>
 
 
     <div class="columns is-2">

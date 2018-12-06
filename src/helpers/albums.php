@@ -9,6 +9,15 @@
         $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
         return $res;
     }
+
+    function getAlbumById($album_id, $db)
+    {
+        $st ="SELECT * from Album WHERE Album_Id = :albumid";
+        $prepSt = $db->prepare($st);
+        $prepSt->execute(['albumid' => $album_id]);
+        $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
+        return $res[0];
+    }
   
     //Create Album // Finished
     function createAlbum($db, $owner, $title, $description, $date_updated, $accessibility)

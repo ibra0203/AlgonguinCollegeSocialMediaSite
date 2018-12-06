@@ -1,16 +1,9 @@
-
-
-
-SELECT `Comment`.`*`, `User`.`Name`
-FROM `Comment`
-JOIN `User` 
-ON `User`.UserId = `Comment`.Author_Id
-WHERE Picture_Id = :picture_id
-
-foreach ( $comments as $comment ) {
-
-}
-
 <?php 
-
+    function createComment($db, $author_id, $picture_id, $comment_text) {
+        $date= date("Y-m-d H:i:s");
+        $st = "INSERT INTO COMMENT(`Author_Id`, `Picture_Id`, `Comment_Text`, `Date`)
+        VALUES(:athor_id, :picture_id, comment_text, :date)";
+        $prepSt = $db->prepare($st);
+        $prepSt->execute(['athor_id' => $author_id, 'picture_id' => $picture_id, 'comment_text' => $comment_text, 'date' => $date]);
+    }
 ?>

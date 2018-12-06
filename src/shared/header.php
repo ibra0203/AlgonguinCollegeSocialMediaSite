@@ -11,6 +11,9 @@ session_start();
   <title>Document</title>
   <!-- <link rel="stylesheet" href="darkly.css"> -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+   <link rel="stylesheet" href="./content/css/mypictures.css">
+   
+  
     <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 </head>
 <nav class="navbar is-dark" role="navigation" aria-label="main navigation">

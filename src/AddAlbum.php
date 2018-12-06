@@ -1,7 +1,11 @@
 <?php
 ## declares database as $db
 session_start();
+include 'helpers/protected.php';
+ValidateUser();
+
 include 'shared/db.php';
+include 'helpers/validation.php';
 include 'helpers/util.php';
 include 'helpers/albums.php';
 
@@ -10,12 +14,14 @@ $albumTitle = getPostSafely('albumTitle');
 $access = getPostSafely('access');
 $description = getPostSafely('description');
 $createMsg = '';
-
+$errMsg = '';
 
 if (isset($_POST['submit'])) {
-  // $date_updated = date("Y/m/d");
-  $date_updated = date("Y-m-d H:i:s");
-  $createMsg = createAlbum($db, $owner, $albumTitle, $description, $date_updated, $access);
+  $errMsg =  ValidateRequired($albumTitle);
+  if($errMsg == '') {
+    $date_updated = date("Y-m-d H:i:s");
+    $createMsg = createAlbum($db, $owner, $albumTitle, $description, $date_updated, $access);
+  }
 }
 
 include 'shared/header.php';
@@ -33,13 +39,12 @@ include 'shared/header.php';
           <div class='flash-msg column is-fullwidth  notification is-success'>
           $createMsg
             <button id='delete' class='delete'></button>
-          
           </div>";
         }  ?>
 
-      <form 
+      <form
         action="<?php echo $_SERVER['PHP_SELF']?>"
-        method="POST" 
+        method="POST"
         class="inputForm"
         >
         <!-- ALBUM TITLE -->
@@ -50,10 +55,10 @@ include 'shared/header.php';
                 <div class="field-body">
                   <div class="field">
                     <p class="control is-expanded has-icons-left has-icons-right">
-                      <input 
-                      class="input" 
-                      type="text" 
-                      placeholder="" 
+                      <input
+                      class="input"
+                      type="text"
+                      placeholder=""
                       name="albumTitle"
                       value = "<?php echo (isset($albumTitle))?$albumTitle:'';?>"
                       >
@@ -62,10 +67,10 @@ include 'shared/header.php';
                       <span class="icon is-small is-left">
                         <i class="fas fa-images"></i>
                       </span>
-                      <p class="help is-danger"> <?php  echo $idMsg; ?> </p>
+                      <p class="help is-danger"> <?php  echo $errMsg; ?> </p>
 
                     </p>
-                  </div> 
+                  </div>
                 </div>
               </div>
 
@@ -85,7 +90,7 @@ include 'shared/header.php';
                       </option>
                     </select>
                 </div>
-              </div>    
+              </div>
           </div>
         </div>
 
@@ -101,26 +106,22 @@ include 'shared/header.php';
               </div>
           </div>
         </div>
-
-          
               <div class="field-body">
                 <div class="field">
                   <div class="control">
                   </div>
-                </div>   
+                </div>
                     <div class="control ">
                     <input
                       class="button is-success"
                       type="submit" value="Add" name="submit" >
                       <input class="button is-warning clearButton"
-                       type="reset" 
+                       type="reset"
                        name="reset"
-                       onclick="location.href='AddAlbum.php'; " value="Reset">                
+                       onclick="location.href='AddAlbum.php'; " value="Reset">
                     </div>
                   </div>
               </div>
-            
-             
        </form>
     </div>  <!-- COLUMN -->
   </div>    <!-- CONTAINER -->
@@ -129,4 +130,3 @@ include 'shared/header.php';
 <script type="text/javascript" src="content/scripts/removeNotificaiton.js"></script>
 <!-- FOOTER -->
 <?php include 'shared/footer.php'; ?>
-

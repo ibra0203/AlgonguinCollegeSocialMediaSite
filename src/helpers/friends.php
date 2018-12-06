@@ -62,6 +62,35 @@
     $prepSt->execute(['friend_id'=>$friend_id,'current_user'=>$user_id]);
   }
 
+  // function getFriendById($db , $friend_id, $name) {  // Make sure they are friends, if they aren't redirect to MyFriends.php
+  //   $st = "SELECT `User`.`UserId`
+  //         FROM `Friendship`
+  //         JOIN `User`
+  //         ON `User`.`UserId` = `Friendship`.`Friend_RequesteeId`
+  //         OR `User`.`UserId` = `Friendship`.`Friend_RequesterId`
+  //         WHERE
+  //         `User`.`Name` <> :my_name
+  //         AND (
+  //               `Friendship`.`Friend_RequesterId` = :user_id
+  //         OR    `Friendship`.`Friend_RequesteeId` = :user_id
+  //         )
+  //         AND `Friendship`.`Status` = 'accepted'";
+  //   $prepSt = $db->prepare($st);
+  //   $prepSt->execute(['user_id'=>$_SESSION['login'], 'my_name' => $name]);
+  //   foreach($prepSt as $friendId) {
+  //     if($friendId == $friend_id) {
+  //       $st = "SELECT *
+  //              FROM User
+  //              WHERE UserId = :id";
+  //       $prepSt =$db->prepare($st);
+  //       $prepSt->execute(['id'=>$friend_id]);
+  //       $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
+  //       return $res[0];
+  //     }
+  //   }
+  //   header('Location: MyFriends.php');
+  // }
+
   function getFriendById($db , $friend_id) {
     $st = "SELECT * FROM User
            WHERE UserId = :id";
@@ -70,6 +99,7 @@
     $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
     return $res[0];
   }
+
   function getSharedAlbums($db, $friend_id)
   {
       $st = 'SELECT * FROM `Album` WHERE `Album`.`Owner_Id`= :friend_id AND `Album`.`Accessibility_Code` = "shared"';

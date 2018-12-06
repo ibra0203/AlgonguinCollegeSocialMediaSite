@@ -1,5 +1,8 @@
 <?php 
 session_start();
+include 'helpers/protected.php';
+ValidateUser();
+
 include 'helpers/validation.php';
 include 'helpers/friends.php';
 include 'helpers/util.php';
@@ -132,7 +135,6 @@ include 'shared/header.php';
       </h3>
       </div>
 
-      
 
       <br>
       <br>
@@ -141,7 +143,6 @@ include 'shared/header.php';
   <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
   method="post"
 >
-
 <?php if ($addMsg != '') {
           echo "
           <div class='flash-msg column is-fullwidth  notification is-success'>
@@ -170,8 +171,6 @@ include 'shared/header.php';
               </tr>
             </thead>
             <tbody>
-            
-
              <?php 
                   foreach ($myFriends as $user) {
                       $sharedAlbumsCount = count(getSharedAlbums($db, $user->UserId));

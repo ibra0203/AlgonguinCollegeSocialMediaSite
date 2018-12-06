@@ -204,7 +204,7 @@ if ( isset($_POST['submit']) ) {
                   <div class="control">
                     <input
                       class="button is-success is-fullwidth"
-                      type="submit" value="submit" name="submit" >
+                      type="submit" value="Submit" name="submit" >
                       
                     
                   </div>

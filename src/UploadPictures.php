@@ -1,45 +1,88 @@
 <?php 
 session_start();
+include 'helpers/protected.php';
+ValidateUser();
+
 include 'helpers/validation.php';
 include 'helpers/util.php';
-
-include 'shared/db.php';
-
-
+<<<<<<< HEAD
+=======
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
+include 'shared/db.php';
+>>>>>>> 60141131d72208a8330ab47f95aa400762622b8c
+include 'helpers/picturefunctions.php';
+
+define('ORIGINAL_IMAGE_DESTINATION', "./Pictures/OriginalPictures");
+define('IMAGE_DESTINATION', "./Pictures/AlbumPictures");
+define('THUMB_DESTINATION', "./Pictures/AlbumThumbnails");
+
+define('IMAGE_MAX_WIDTH', 1024);
+define('IMAGE_MAX_HEIGHT', 800);
+
+define('THUMB_MAX_WIDTH', 100);
+define('THUMB_MAX_HEIGHT', 100);
+
+<<<<<<< HEAD
+
 
 $owner = $_SESSION['login'];
+=======
 
+>>>>>>> 60141131d72208a8330ab47f95aa400762622b8c
 
 $imgTitle = getPostSafely('imageTitle');
-$files = getPostSafely('files');
 $description = getPostSafely('description');
 
 // Retrieve albums
 $albums = getAlbumsByUser($owner, $db);
-
-
 // TODO Parse Images
+$error = '';
 
+var_dump($_POST['txtUpload']);
 
-// TODO Add image relations to DB
 
 if (isset($_POST['submit'])) {
-  foreach( $pictures as $picture) {
+  $albumId = $_POST['albumId'][0];
+  for ($j = 0; $j < count($_FILES['txtUpload']['tmp_name']); $j++) {
 
-    /// TODO implement this
-    //function addPicture($db, $fileame, $title, $description )
+    if ($_FILES['txtUpload']['error'][$j] == 0) {
+        $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION, $j);
+
+        $imageDetails = getimagesize($filePath);
+
+        if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes)) {
+            resamplePicture($filePath, IMAGE_DESTINATION, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+            resamplePicture($filePath, THUMB_DESTINATION, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
+            
+            $pathInfo = pathinfo($filePath);
+            $fileName = $pathInfo['name'];
+            $ext = $pathInfo['extension'];
+            $filename = $fileName . $ext;
+            echo $filename;
+             addPicture($db, $filename, $imgTitle, $description, $albumId );            
+        } else {
+            $error = "Uploaded file is not a supported type";
+            unlink($filePath);
+        }
+    } elseif ($_FILES['txtUpload']['error'][$j] == 1) {
+        $error = "Upload file is too large";
+    } elseif ($_FILES['txtUpload']['error'][$j] == 4) {
+        $error = "No upload file specified";
+    } else {
+        $error = "Error happened while uploading the file. Try again later";
+    }
+  // header("Location: UploadPictures.php");
+  // exit();  
+    
   }
-  $albumId = $_POST['albumId'];
-  echo $albumId[0];
-
 }
 
 
 include 'shared/header.php';
 
 // var_dump($_POST);
+var_dump($_FILES);
 ?>
 
 <div class="section hero is-fullheight">
@@ -48,8 +91,6 @@ include 'shared/header.php';
       <?php  include 'shared/welcome.php' ;?>
     <div class="column is-7 is-offset-2 has-text-left">
     
-      
-
       <form 
         action="<?php echo $_SERVER['PHP_SELF']?>"
         method="POST" 
@@ -87,12 +128,13 @@ include 'shared/header.php';
                   <div class="field-body">
                       <div id="files" class="file has-name is-fullwidth" >
                         <label class="file-label">
-                          <input class="file-input file-upload" 
-                                  type="file" 
-                                  accept = "*"
-                                  multiple
-                                  type="file" 
-                                  name="imgUpload[]">
+                          <input 
+                              type="file" 
+                              class="file-input file-upload" 
+                              name="txtUpload[]"
+                              multiple 
+                              accept="*">   
+                              <!-- accept="image/png, image/jpeg, image/gif"      -->
                           <span class="file-cta">
                             <span class="file-icon">
                               <i class="fas fa-upload"></i>
@@ -105,7 +147,6 @@ include 'shared/header.php';
                       </div>  
                   </div>   
               </div>
-        
         <div class="field is-horizontal">
             <div class="field-label ">
                 <label class="label">Upload to</label>
@@ -113,7 +154,7 @@ include 'shared/header.php';
             <div class="field-body">
               <div class="is-fullwidth control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select name="albumId[]">
+                  <select name="albumId">
                     <?php 
                       foreach($albums as $album) {
                         echo "<option value='$album->Album_Id'> $album->Title </option>";
@@ -150,7 +191,7 @@ include 'shared/header.php';
                     <div class="control">
                     <input
                       class="button is-success"
-                      type="submit" value="Add Pictures" name="submit" >
+                      type="submit" value="AddPictures" name="submit" >
                       <input class="button is-warning clearButton"
                        type="reset" 
                        name="reset"
@@ -165,15 +206,15 @@ include 'shared/header.php';
 </div>      <!-- HERO -->
 
 <script>
-let uploadImg = document.querySelector('.file-upload');
-let fileLabel = document.querySelector('.file-text');
-const fileBtn = document.querySelector('#files');
-uploadImg.addEventListener('change', (e) => {
-      let text = 'Choose a File';
-      const files = Array.from(e.target.files);
-      files.length !== 0 ? text = files[0].name : 'Upload Images...';
-      fileLabel.innerHTML = text;
-      fileBtn.classList.add('is-success');
-});
+// let uploadImg = document.querySelector('.file-upload');
+// let fileLabel = document.querySelector('.file-text');
+// const fileBtn = document.querySelector('#files');
+// uploadImg.addEventListener('change', (e) => {
+//       let text = 'Choose a File';
+//       const files = Array.from(e.target.files);
+//       files.length !== 0 ? text = files[0].name : 'Upload Images...';
+//       fileLabel.innerHTML = text;
+//       fileBtn.classList.add('is-success');
+// });
 </script>
 <?php include 'shared/footer.php'; ?>
