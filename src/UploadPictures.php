@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 include_once ("ConstantsAndSettings.php");
 
@@ -7,31 +7,24 @@ ValidateUser();
 
 include 'helpers/validation.php';
 include 'helpers/util.php';
-
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
-include 'shared/db.php';
 include 'helpers/picturefunctions.php';
-
-
+include 'shared/db.php';
 
 $owner = $_SESSION['login'];
-
 
 $imgTitle = getPostSafely('imageTitle');
 $description = getPostSafely('description');
 
-// Retrieve albums
 $albums = getAlbumsByUser($owner, $db);
+
 // TODO Parse Images
 $error = '';
- print_r($_FILES['txtUpload']['name']);
+print_r($_FILES['txtUpload']['name']);
 
 if (isset($_POST['submit'])) {
   $albumId = $_POST['albumId'][0];
-  
- 
-
   for ($j = 0; $j < count($_FILES['txtUpload']['name']); $j++) {
     if ($_FILES['txtUpload']['error'][$j] == 0) {
         $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION, $j);
@@ -41,13 +34,13 @@ if (isset($_POST['submit'])) {
         if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes)) {
             resamplePicture($filePath, IMAGE_DESTINATION, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
             resamplePicture($filePath, THUMB_DESTINATION, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
-            
+
             $pathInfo = pathinfo($filePath);
             $fileName = $pathInfo['name'];
             $ext = $pathInfo['extension'];
             $filename = $fileName . $ext;
             echo $filename;
-             addPicture($db, $filename, $imgTitle, $description, $albumId );            
+            addPicture($db, $filename, $imgTitle, $description, $albumId );
         } else {
             $error = "Uploaded file is not a supported type";
             unlink($filePath);
@@ -60,16 +53,14 @@ if (isset($_POST['submit'])) {
         $error = "Error happened while uploading the file. Try again later";
     }
   // header("Location: UploadPictures.php");
-  // exit();  
-    
+  // exit();
   }
 }
-
 
 include 'shared/header.php';
 
 // var_dump($_POST);
-//var_dump($_FILES);
+// var_dump($_FILES);
 ?>
 
 <div class="section hero is-fullheight">
@@ -77,13 +68,13 @@ include 'shared/header.php';
   <h1 class="title is-1 has-text-centered">Upload Pictures</h1>
       <?php  include 'shared/welcome.php' ;?>
     <div class="column is-7 is-offset-2 has-text-left">
-    
-      <form 
+
+      <form
         action="<?php echo $_SERVER['PHP_SELF']?>"
-        method="POST" 
+        method="POST"
         class="inputForm"
          enctype="multipart/form-data"
-        > 
+        >
 
       <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -92,10 +83,10 @@ include 'shared/header.php';
                 <div class="field-body">
                   <div class="field">
                     <p class="control is-expanded has-icons-left has-icons-right">
-                      <input 
-                      class="input" 
-                      type="text" 
-                      placeholder="" 
+                      <input
+                      class="input"
+                      type="text"
+                      placeholder=""
                       name="imageTitle"
                       value = "<?php echo (isset($albumTitle))?$albumTitle:'';?>"
                       >
@@ -106,7 +97,7 @@ include 'shared/header.php';
                       </span>
                       <!-- <p class="help is-danger"></p> -->
                     </p>
-                  </div> 
+                  </div>
                 </div>
               </div>
               <div class="field is-horizontal ">
@@ -116,12 +107,18 @@ include 'shared/header.php';
                   <div class="field-body">
                       <div id="files" class="file has-name is-fullwidth" >
                         <label class="file-label">
+<<<<<<< HEAD
+                          <input
+                              type="file"
+                              class=""
+=======
                           <input 
                               type="file" 
                               class="file-input" 
+>>>>>>> 444c4fd0ee3157a54c3c0aecadc97b5079b1cee4
                               name="txtUpload[]"
-                              multiple 
-                              >   
+                              multiple
+                              >
                               <!-- accept="image/png, image/jpeg, image/gif"      -->
                           <span class="file-cta">
                             <span class="file-icon">
@@ -132,8 +129,8 @@ include 'shared/header.php';
                             </span>
                           </span>
                         </label>
-                      </div>  
-                  </div>   
+                      </div>
+                  </div>
               </div>
         <div class="field is-horizontal">
             <div class="field-label ">
@@ -143,7 +140,7 @@ include 'shared/header.php';
               <div class="is-fullwidth control has-icons-left">
                 <div class="select is-fullwidth">
                   <select name="albumId">
-                    <?php 
+                    <?php
                       foreach($albums as $album) {
                         echo "<option value='$album->Album_Id'> $album->Title </option>";
                       }
@@ -156,7 +153,7 @@ include 'shared/header.php';
               </div>
             </div>
         </div>
-      
+
       <!-- DESCRIPTION -->
       <div class="field is-horizontal">
           <div class="field-label ">
@@ -175,20 +172,19 @@ include 'shared/header.php';
                 <div class="field">
                   <div class="control">
                   </div>
-                </div>   
+                </div>
                     <div class="control">
                     <input
                       class="button is-success"
                       type="submit" value="AddPictures" name="submit" >
                       <input class="button is-warning clearButton"
-                       type="reset" 
+                       type="reset"
                        name="reset"
-                       onclick="location.href='UploadPictures.php'; " value="Reset">                
+                       onclick="location.href='UploadPictures.php'; " value="Reset">
                     </div>
                   </div>
               </div>
-
-      </form>   
+      </form>
     </div>  <!-- COLUMN -->
   </div>    <!-- CONTAINER -->
 </div>      <!-- HERO -->
