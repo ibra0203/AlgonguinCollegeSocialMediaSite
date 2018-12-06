@@ -1,5 +1,7 @@
-<?php
-// include 'shared/db.php';
+<?php 
+include 'shared/db.php';
+
+
 include 'helpers/validation.php';
 include 'helpers/login.php';
 include 'helpers/util.php';

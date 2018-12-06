@@ -5,12 +5,14 @@ ValidateUser();
 
 include 'helpers/validation.php';
 include 'helpers/friends.php';
+include 'helpers/util.php';
 include 'helpers/addFriend.php';
 include 'helpers/databaseHelper.php';
 ## declares database as $db
 include 'shared/db.php';
 
 $addMsg = '';
+$unfriendMsg='';
 $owner = $_SESSION['login'];
 
 $pendingRequests = getFriendRequests($db, $owner);
@@ -27,24 +29,104 @@ if (isset($_POST['deny'])) {
     denyFriendRequest($db, $requester_id, $owner);
     
   }
+  header("Location: MyFriends.php");
 }
 
 // accept friendships
 if (isset($_POST['accept'])) {
+   $acceptedRequests = '';
   $requests = $_POST['requests'];
+  #counter
+  $i=0;
+  $requestsCount = count($requests);
   foreach ($requests as $requester_id) {
+     
+     $reqName = getNameFromId($requester_id, $db);
+     if($i>0)
+     {
+        $acceptedRequests .=","; 
+     }
+     
+    $acceptedRequests.= $reqName;
     acceptFriendRequest($requester_id, $owner, $db);
+    $i++;
   }
-  $addMsg = 'Friend Requests Accepted';
+  if($i==0)
+      header("Location: MyFriends.php");
+  #don't set the friend accepting message straight away, refresh the page and send a Get request with the names of the new friends.
+  else
+  {
+      $_SESSION['acceptedRequests'] = $acceptedRequests;
+    header("Location: MyFriends.php?acceptedReq=1");
+  }
 }
+
 
 // defriend
 if (isset($_POST['unfriend'])) {
   $selected = $_POST['unfriends'];
+  $i=0;
   foreach ($selected as $current_friend) {
     denyFriendRequest($db, $current_friend, $owner);
     unfriend($db, $current_friend, $owner);
+    $i++;
   }
+  $iS = (string)$i;
+  $_SESSION['unfriended'] = true;
+    header("Location: MyFriends.php?unfriended=".$iS);
+  
+}
+
+if(isset($_GET['acceptedReq']))
+{
+   if(isset($_SESSION['acceptedRequests']))
+   {
+    $accReq = $_SESSION['acceptedRequests'];
+  
+    $reqArray = explode(',', $accReq);
+    
+        $newFriends='';
+        for($i=0; $i< count($reqArray); $i++)
+        {
+            $f = $reqArray[$i];
+
+            if($i > 0)
+            {
+                if($i == count($reqArray)-1)
+                    $newFriends .= ", and ";
+                else
+                    $newFriends .= ", ";
+            }
+            $newFriends .= $f;
+
+            if($i>2)
+            {
+                $remaining =(string) (count($reqArray) - ($i+1));
+                if($remaining =="1")
+                    $newFriends .= " and ".$remaining." other.";
+                else if($remaining >1)
+                 $newFriends .= " and ".$remaining." others.";
+                break;
+            }
+        }
+        $addMsg = "Friend Request(s) Accepted. You're now friends with ".$newFriends;
+        unset($_SESSION['acceptedRequests']);
+   }
+    
+}
+
+if(isset($_GET['unfriended']))
+{
+    if(isset($_SESSION['unfriended']))
+    {
+        $unfriendCount = (int) $_GET['unfriended'];
+        $unfriendCountS = (string) $unfriendCount;
+        if($unfriendCount == 1)
+                $unfriendMsg = "Removed (1) friend from your list.";
+        else if($unfriendCount > 1)
+                $unfriendMsg = "Removed ($unfriendCountS) friends from your list.";
+        unset($_SESSION['unfriended']);
+    }
 }
 
 include 'shared/header.php';
@@ -81,6 +163,13 @@ include 'shared/header.php';
           <button id='delete' class='delete'></button>
           </div>";
         }  ?>
+<?php if ($unfriendMsg != '') {
+          echo "
+          <div class='flash-msg column is-fullwidth  notification is-danger'>
+            $unfriendMsg
+          <button id='delete' class='delete'></button>
+          </div>";
+        }  ?>
 
 <div class="columns is-5">
     <div class="column has-background-grey-lighter">
@@ -97,13 +186,14 @@ include 'shared/header.php';
             <tbody>
              <?php 
                   foreach ($myFriends as $user) {
+                      $sharedAlbumsCount = count(getSharedAlbums($db, $user->UserId));
                     echo "<tr>";
                     echo "<td>
                             <a href = 'FriendPictures.php?friendId=$user->UserId' > 
                                 $user->Name
                             </a>
                           </td>";
-                    echo "<td > 14 </td>";
+                    echo "<td > $sharedAlbumsCount </td>";
                     echo "<td colspan='1'>
                             <input type='checkbox' name='unfriends[]' value=$user->UserId >
                         </td>";

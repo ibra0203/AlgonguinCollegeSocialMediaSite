@@ -1,5 +1,7 @@
 <?php 
-  $dbIniLocation = "db_connection.ini";
+  if(!isset($dbIniPath))
+      $dbIniPath ='';
+  $dbIniLocation = $dbIniPath."db_connection.ini";
   $dbConnection = parse_ini_file($dbIniLocation);
     extract($dbConnection);
     $db = new PDO($dsn, $user, $password);

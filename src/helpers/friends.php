@@ -11,7 +11,7 @@
 
 
   function getFriendRequests($db, $user) {
-    $st = "SELECT `User`.`UserId`, `Friendship`.`*`,`User`.`Name`
+    $st = "SELECT `User`.`UserId`, `Friendship`.*,`User`.`Name`
             FROM `Friendship`
             INNER JOIN `User`
             ON `User`.`UserId` = `Friendship`.`Friend_RequesterId`
@@ -99,4 +99,12 @@
   //   $res = $prepSt->fetchAll(PDO::FETCH_OBJ);
   //   return $res[0];
   // }
+  function getSharedAlbums($db, $friend_id)
+  {
+      $st = 'SELECT * FROM `Album` WHERE `Album`.`Owner_Id`= :friend_id AND `Album`.`Accessibility_Code` = "shared"';
+      $prepSt = $db->prepare($st);
+      $prepSt->execute(['friend_id'=>$friend_id]);
+      $res = $prepSt->fetchAll();
+      return $res;
+  }
 ?>

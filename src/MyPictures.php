@@ -5,7 +5,9 @@ include 'shared/db.php';
 include 'shared/header.php';
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
+include 'helpers/Class_Lib.php';
 include 'helpers/comments.php';
+include 'helpers/databaseHelper.php';
 
 
 $owner = $_SESSION['login'];
@@ -15,9 +17,33 @@ $albums = getAlbumsByUser($owner, $db);
 $album_id = $_POST['albumId'];
 $displayedAlbum = getAlbumById($album_id, $db);
 
+
+// get picture id 
+ $picture_id = $_POST['pictureId'];
+// get current
 // get the pictures for that album
 $albumPictures = getPicturesByAlbum($db, $album_id);
+$displayedPic=null;
 
+if(!isset($picture_id))
+{
+    if(count($albumPictures)>0)
+    {
+        $displayedPic = $albumPictures[0];
+        $picture_id = $displayedPic->getId();
+    }
+}
+else{
+// find displayed picture from the album pics
+foreach($albumPictures as $p)
+{
+    if($p->getId() == $picture_id)
+    {
+        $displayedPic = $p;
+        break;
+    }
+}
+}
 if (isset($_POST["addComment"]) ){
    
   // $comment_text = $_POST['commentBox'];
@@ -26,7 +52,6 @@ if (isset($_POST["addComment"]) ){
   //  //createComment($db, $author_id, $picture_id, $comment_text);
 }
 
-var_dump($_POST);
 ?>
 
 
@@ -38,7 +63,7 @@ var_dump($_POST);
     >
 
     <div class="column is-6 is-offset-2 has-text-left">
-    <h1 class="title is-1 has-text-centered"> <b> USER's  </b> Pictures</h1>
+    <h1 class="title is-1 has-text-centered"> <b> <?php echo getNameFromId($owner, $db);?>'s  </b> Pictures</h1>
     <hr>
   </div>  <!-- COLUMN -->
 
@@ -65,41 +90,34 @@ var_dump($_POST);
   </div>
   
 
-
-    <div class="columns is-2">
+<?php
+    $noAlbumPic = "https://via.placeholder.com/800x500.png/09f/fff";
+    $albumSrcPic = $noAlbumPic;
+    if($displayedPic !=null)
+    {
+        $albumSrcPic = $displayedPic->getAibumFilePath();
+    }
+   echo <<< HTML
+<div class="columns is-2">
       <div class="column is-8">
-      <img src="https://via.placeholder.com/800x500.png/09f/fff" alt="">
+      <img src="{$albumSrcPic}" alt="">
       <br>
       <br>
-      <div class=" horizontal-scroll-wrapper">
+      <div class=" horizontal-scroll-wrapper">       
+HTML;
 
+     
+       foreach($albumPictures as $pic)
+       {
+           $picId = $pic->getId();
+           $picThumb = $pic->getThumbnailFilePath();
+        echo <<< HTML
         <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
-
-        <div class="thumbnail">
-            <img src="https://via.placeholder.com/100x100.png/09f/fff" alt="">
-        </div>
+            <button class = "hid-btn" type="submit" name="pictureId" value={$picId}><img src="{$picThumb}" alt=""></button>
+        </div>           
+HTML;
+       }
+?>
       
       </div>
       </div>
@@ -108,7 +126,8 @@ var_dump($_POST);
       <h2 class="title is-5"> Description:</h2>
         <p class="">
          <?php
-         echo $displayedAlbum->Description; 
+         if(isset($displayedPic))
+         echo $displayedPic->getDescription(); 
          ?>          
         </p>
         <hr>

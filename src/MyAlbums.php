@@ -13,16 +13,26 @@ include 'shared/db.php';
 $owner = $_SESSION['login'];
 $albums = getAlbumsByUser($owner, $db);
 $successNotification = '';
-
+$succMsg='';
 if (isset ($_POST['submit'])) {
   $updatedAlbums = $_POST['albums'];
   if(count($albums) > 0) {
     foreach ($updatedAlbums as $album) {
       $album_id = explode(",", $album)[0];
       $access = explode(",", $album)[1];
-      changeAlbumPermissions($db, $access, $album_id);
+      $succMsg = changeAlbumPermissions($db, $access, $album_id);
+      $_SESSION['changedPermissions'] = true;
+      header("Location: MyAlbums.php?msg=".$succMsg);
     }
   }
+}
+if(isset($_GET['msg']))
+{
+    if(isset($_SESSION['changedPermissions']))
+    {
+        $succMsg =$_GET['msg'];
+        unset($_SESSION['changedPermissions']);
+    }
 }
 
 $album =  $_GET['deleteAlbum'];
@@ -47,7 +57,13 @@ include 'shared/header.php';
     <form id="form" action="<?php echo $_SERVER['PHP_SELF']?>"
       method="post"
     >
-
+<?php if ($succMsg != '') {
+          echo "
+          <div class='flash-msg column is-fullwidth  notification is-success'>
+            $succMsg
+          <button id='delete' class='delete'></button>
+          </div>";
+        }  ?>
       <a href="AddAlbum.php" class="button is has-text-centered is-link" > 
           <span class="icon is-large">
           <i class="fas fa-lg fa-plus-circle"></i>

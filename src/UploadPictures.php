@@ -1,35 +1,22 @@
 <?php 
 session_start();
+include_once ("ConstantsAndSettings.php");
+
 include 'helpers/protected.php';
 ValidateUser();
 
 include 'helpers/validation.php';
 include 'helpers/util.php';
-<<<<<<< HEAD
-=======
+
 include 'helpers/albums.php';
 include 'helpers/pictures.php';
 include 'shared/db.php';
->>>>>>> 60141131d72208a8330ab47f95aa400762622b8c
 include 'helpers/picturefunctions.php';
 
-define('ORIGINAL_IMAGE_DESTINATION', "./Pictures/OriginalPictures");
-define('IMAGE_DESTINATION', "./Pictures/AlbumPictures");
-define('THUMB_DESTINATION', "./Pictures/AlbumThumbnails");
-
-define('IMAGE_MAX_WIDTH', 1024);
-define('IMAGE_MAX_HEIGHT', 800);
-
-define('THUMB_MAX_WIDTH', 100);
-define('THUMB_MAX_HEIGHT', 100);
-
-<<<<<<< HEAD
 
 
 $owner = $_SESSION['login'];
-=======
 
->>>>>>> 60141131d72208a8330ab47f95aa400762622b8c
 
 $imgTitle = getPostSafely('imageTitle');
 $description = getPostSafely('description');
@@ -38,14 +25,14 @@ $description = getPostSafely('description');
 $albums = getAlbumsByUser($owner, $db);
 // TODO Parse Images
 $error = '';
-
-var_dump($_POST['txtUpload']);
-
+ print_r($_FILES['txtUpload']['name']);
 
 if (isset($_POST['submit'])) {
   $albumId = $_POST['albumId'][0];
-  for ($j = 0; $j < count($_FILES['txtUpload']['tmp_name']); $j++) {
+  
+ 
 
+  for ($j = 0; $j < count($_FILES['txtUpload']['name']); $j++) {
     if ($_FILES['txtUpload']['error'][$j] == 0) {
         $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION, $j);
 
@@ -82,7 +69,7 @@ if (isset($_POST['submit'])) {
 include 'shared/header.php';
 
 // var_dump($_POST);
-var_dump($_FILES);
+//var_dump($_FILES);
 ?>
 
 <div class="section hero is-fullheight">
@@ -95,6 +82,7 @@ var_dump($_FILES);
         action="<?php echo $_SERVER['PHP_SELF']?>"
         method="POST" 
         class="inputForm"
+         enctype="multipart/form-data"
         > 
 
       <div class="field is-horizontal">
@@ -130,10 +118,10 @@ var_dump($_FILES);
                         <label class="file-label">
                           <input 
                               type="file" 
-                              class="file-input file-upload" 
+                              class="" 
                               name="txtUpload[]"
                               multiple 
-                              accept="*">   
+                              >   
                               <!-- accept="image/png, image/jpeg, image/gif"      -->
                           <span class="file-cta">
                             <span class="file-icon">

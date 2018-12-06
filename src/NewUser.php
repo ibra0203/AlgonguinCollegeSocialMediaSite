@@ -69,7 +69,7 @@ if ( isset($_POST['submit']) ) {
                       <span class="icon is-small is-left">
                         <i class="fas fa-id-card"></i>
                       </span>
-                      <p class="help is-danger"> <?php  echo $validation['id'] ?> </p>
+                      <p class="help is-danger"> <?php  echo $validation['id']; ?> </p>
 
                     </p>
                   </div> 
