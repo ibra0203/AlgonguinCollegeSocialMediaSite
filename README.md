@@ -20,4 +20,4 @@ docker-compose up
 
 [Yoshi Chlandy](https://github.com/YoshiChladny) 
 
-[Mahmoud Ibrahim](https://github.com/ibra0203) 
+[Mody Ibrahim](https://github.com/ibra0203) 
